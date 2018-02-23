@@ -1,0 +1,31 @@
+---
+Debugger:
+  DebugThreshold: debug
+  TestMode: '0'
+Description: ''
+FrameworkVersion: 5.0.3
+Provider:
+  Operation: {}
+  Transport:
+    Type: ''
+RemoteSystem: ''
+Requester:
+  Invoker:
+    trello:
+      Description: ''
+      Events:
+      - Asynchronous: '1'
+        Event: TicketCreate
+      MappingInbound:
+        Type: Simple
+      MappingOutbound:
+        Type: Simple
+      Type: Test::TestSimple
+  Transport:
+    Config:
+      DefaultCommand: POST
+      Host: http://localhost:8080
+      InvokerControllerMapping:
+        trello:
+          Controller: /TicketCreate/:TicketID
+    Type: HTTP::REST
