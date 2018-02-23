@@ -2,7 +2,6 @@ package handler
 
 import (
 	"github.com/gin-gonic/gin"
-	"bytes"
 	"log"
 	"github.com/gin-gonic/gin/binding"
 )
