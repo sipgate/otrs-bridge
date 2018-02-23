@@ -24,7 +24,7 @@ func TicketCreateHandler() func(c *gin.Context) {
 			markdownBody := html2md.Convert(firstTicket.Article[0].Body)
 
 			listId := viper.GetString("trello.ticketCreateListId")
-			cardTitle := fmt.Sprintf("[#%s] %s", firstTicket.Title, firstTicket.TicketID)
+			cardTitle := fmt.Sprintf("[#%s] %s", firstTicket.TicketID, firstTicket.Title)
 			card := trello.Card{Name: cardTitle, Desc: markdownBody, IDList: listId}
 
 			client := trelloClient.NewClient()
