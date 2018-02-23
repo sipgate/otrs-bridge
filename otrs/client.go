@@ -15,11 +15,11 @@ const (
 	otrsBaseUrl = "https://tickets.sipgate.net/otrs/nph-genericinterface.pl/Webservice/Trello"
 )
 
-func otrsRequest(path string) (*http.Response, error) {
+func otrsRequest(path string, body string) (*http.Response, error) {
 	user := viper.GetString("otrs.user")
 	password := viper.GetString("otrs.password")
-	credentials := "{\"UserLogin\":\""+user+"\",\"Password\":\""+password+"\"}"
-	req, err := http.NewRequest("POST", otrsBaseUrl+path, bytes.NewBufferString(credentials))
+	credentials := "?UserLogin="+user+"&Password="+password
+	req, err := http.NewRequest("POST", otrsBaseUrl+path+credentials, bytes.NewBufferString(body))
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -135,7 +135,7 @@ type TicketResponse struct {
 }
 
 func GetTicket(id string) (TicketResponse, error) {
-	res, err := otrsRequest("/Ticket" + id)
+	res, err := otrsRequest("/Ticket/" + id, "{\"AllArticles\":1}")
 	var ticket TicketResponse
 	if err == nil {
 		body, err := ioutil.ReadAll(res.Body)
