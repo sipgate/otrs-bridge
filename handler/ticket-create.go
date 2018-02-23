@@ -7,6 +7,7 @@ import (
 	"log"
 	trelloClient "github.sipgate.net/sipgate/otrs-trello-bride/trello"
 	"github.com/adlio/trello"
+	"github.com/lunny/html2md"
 )
 
 func TicketCreateHandler() func(c *gin.Context) {
@@ -21,7 +22,9 @@ func TicketCreateHandler() func(c *gin.Context) {
 			list, err := client.GetList("5a8fd0e0c819ca735f751a4b", trello.Defaults())
 			if err != nil {
 				firstTicket := ticket.Ticket[0]
-				list.AddCard(&trello.Card{ Name: firstTicket.Title, Desc: firstTicket.Article[0].Body }, trello.Defaults())
+				list.AddCard(
+					&trello.Card{Name: firstTicket.Title, Desc: html2md.Convert(firstTicket.Article[0].Body)},
+					trello.Defaults())
 				c.AbortWithStatus(http.StatusAccepted)
 			} else {
 				c.AbortWithError(500, err)
