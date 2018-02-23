@@ -114,3 +114,5 @@ vendor/
 *.out
 
 config.toml
+
+otrs-trello-bride
