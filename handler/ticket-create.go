@@ -21,11 +21,18 @@ func TicketCreateHandler() func(c *gin.Context) {
 			c.AbortWithError(http.StatusInternalServerError, err)
 		} else {
 			firstTicket := ticket.Ticket[0]
+			originalTicketUrl := "***Original ticket***: http://tickets.sipgate.net/otrs/index.pl?Action=AgentTicketZoom;TicketID="+firstTicket.TicketID
 			markdownBody := html2md.Convert(firstTicket.Article[0].Body)
+			markdownBody = originalTicketUrl + "\n\n---\n\n" + markdownBody
 
 			listId := viper.GetString("trello.ticketCreateListId")
 			cardTitle := fmt.Sprintf("[#%s] %s", firstTicket.TicketID, firstTicket.Title)
-			card := trello.Card{Name: cardTitle, Desc: markdownBody, IDList: listId}
+
+			card := trello.Card{
+				Name:   cardTitle,
+				Desc:   markdownBody,
+				IDList: listId,
+			}
 
 			client := trelloClient.NewClient()
 			err := client.CreateCard(&card, trello.Defaults())
