@@ -1,6 +1,7 @@
 [trello]
 appKey = ""
 token = ""
+ticketCreateListId = ""
 
 [otrs]
 user = ""

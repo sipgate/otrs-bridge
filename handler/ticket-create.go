@@ -8,6 +8,7 @@ import (
 	trelloClient "github.sipgate.net/sipgate/otrs-trello-bride/trello"
 	"github.com/adlio/trello"
 	"github.com/lunny/html2md"
+	"github.com/spf13/viper"
 )
 
 func TicketCreateHandler() func(c *gin.Context) {
@@ -19,7 +20,7 @@ func TicketCreateHandler() func(c *gin.Context) {
 		} else {
 			log.Println(ticket)
 			client := trelloClient.NewClient()
-			list, err := client.GetList("5a8fd0e0c819ca735f751a4b", trello.Defaults())
+			list, err := client.GetList(viper.GetString("trello.ticketCreateListId"), trello.Defaults())
 			if err != nil {
 				firstTicket := ticket.Ticket[0]
 				list.AddCard(
