@@ -134,7 +134,7 @@ type TicketResponse struct {
 	} `json:"Ticket"`
 }
 
-func GetTicket(id string) (TicketResponse, error) {
+func GetTicket(id string) (TicketResponse, *http.Response, []byte, error) {
 	res, err := otrsRequest("/Ticket/" + id, "{\"AllArticles\":1}")
 	var ticket TicketResponse
 	if err == nil {
@@ -145,7 +145,9 @@ func GetTicket(id string) (TicketResponse, error) {
 		}
 
 		json.Unmarshal(body, &ticket)
+
+		return ticket, res, body, nil
 	}
 
-	return ticket, err
+	return TicketResponse{}, nil, nil, err
 }

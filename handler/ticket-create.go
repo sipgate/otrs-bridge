@@ -15,27 +15,26 @@ import (
 func TicketCreateHandler() func(c *gin.Context) {
 	return func(c *gin.Context) {
 		ticketId := c.Param("TicketId")
-		ticket, err := otrs.GetTicket(ticketId)
-		if err != nil {
-			log.Fatal(err)
-			c.AbortWithError(http.StatusInternalServerError, err)
+		ticket, res, body, getTicketErr := otrs.GetTicket(ticketId)
+		if getTicketErr != nil {
+			log.Fatal(getTicketErr)
+			c.AbortWithError(http.StatusInternalServerError, getTicketErr)
+		} else if res.StatusCode >= 400 || len(ticket.Ticket) == 0 {
+			c.AbortWithStatusJSON(res.StatusCode, gin.H{"error": string(body[:])})
 		} else {
-			if len(ticket.Ticket) > 0 {
-				markdownBody, listId, cardTitle := getTicketData(ticket)
-				err := createTrelloCard(cardTitle, markdownBody, listId)
+			markdownBody, listId, cardTitle := getTicketData(ticket)
+			err := createTrelloCard(cardTitle, markdownBody, listId)
 
-				if err == nil {
-					c.AbortWithStatus(http.StatusAccepted)
-				} else {
-					log.Println(err)
-					c.AbortWithError(500, err)
-				}
+			if err == nil {
+				c.AbortWithStatus(http.StatusAccepted)
 			} else {
-				c.AbortWithStatusJSON(404, gin.H{"message": "Ticket with ID " + ticketId + " not found"})
+				log.Println(err)
+				c.AbortWithError(500, err)
 			}
 		}
 	}
 }
+
 func createTrelloCard(cardTitle string, markdownBody string, listId string) error {
 	card := trello.Card{
 		Name:   cardTitle,
