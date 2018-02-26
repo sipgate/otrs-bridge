@@ -4,9 +4,11 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.sipgate.net/sipgate/otrs-trello-bride/handler"
 	"github.sipgate.net/sipgate/otrs-trello-bride/utils"
+	"os"
 )
 
 func main() {
+	os.Setenv("HTTP_PROXY", "http://proxy.netzquadrat.net:8888")
 	utils.ReadConfig()
 	r := gin.Default()
 	r.POST("/TicketCreate/:TicketId", handler.TicketCreateHandler())
