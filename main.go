@@ -8,7 +8,7 @@ import (
 )
 
 func main() {
-	os.Setenv("HTTP_PROXY", "http://proxy.netzquadrat.net:8888")
+	os.Setenv("HTTP_PROXY", "http://proxy.sipgate.net:8888")
 	utils.ReadConfig()
 	r := gin.Default()
 	r.POST("/TicketCreate/:TicketId", handler.TicketCreateHandler())
