@@ -39,12 +39,12 @@
 
 [[constraint]]
   branch = "master"
-  name = "github.com/adlio/trello"
-
-[[constraint]]
-  branch = "master"
   name = "github.com/lunny/html2md"
 
 [[constraint]]
   name = "github.com/spf13/viper"
   version = "1.0.0"
+
+[[constraint]]
+  branch = "master"
+  name = "github.com/derveloper/trello"

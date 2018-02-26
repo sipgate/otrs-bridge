@@ -3,9 +3,9 @@
 
 [[projects]]
   branch = "master"
-  name = "github.com/adlio/trello"
+  name = "github.com/derveloper/trello"
   packages = ["."]
-  revision = "d2192fca4c098a2359d6cdea344c667fcfe2628c"
+  revision = "4e12bf8ef69b117c75130459d40f557a19f0d99a"
 
 [[projects]]
   name = "github.com/fsnotify/fsnotify"
@@ -139,7 +139,7 @@
   branch = "master"
   name = "golang.org/x/sys"
   packages = ["unix"]
-  revision = "37707fdb30a5b38865cfb95e5aab41707daec7fd"
+  revision = "f6cff0780e542efa0c8e864dc8fa522808f6a598"
 
 [[projects]]
   name = "golang.org/x/text"
@@ -169,14 +169,14 @@
   version = "v8.18.2"
 
 [[projects]]
-  branch = "v2"
   name = "gopkg.in/yaml.v2"
   packages = ["."]
-  revision = "d670f9405373e636a5a2765eea47fac0c9bc91a4"
+  revision = "7f97868eec74b32b0982dd158a51a446d1da7eb5"
+  version = "v2.1.1"
 
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "99b867b15d36e9041ed9f8b96f771d05f228f9585b57d0026f4a52501367d667"
+  inputs-digest = "e238d7cf2461e270e9edcec9ce54ccbac27fe8779d1342f1a70beadc00539cb4"
   solver-name = "gps-cdcl"
   solver-version = 1

@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"github.sipgate.net/sipgate/otrs-trello-bride/otrs"
 	trelloClient "github.sipgate.net/sipgate/otrs-trello-bride/trello"
-	"github.com/adlio/trello"
+	"github.com/derveloper/trello"
 	"github.com/lunny/html2md"
 	"github.com/spf13/viper"
 	"log"
