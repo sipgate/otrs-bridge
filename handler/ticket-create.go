@@ -20,7 +20,9 @@ func TicketCreateHandler() func(c *gin.Context) {
 			log.Fatal(getTicketErr)
 			c.AbortWithError(http.StatusInternalServerError, getTicketErr)
 		} else if res.StatusCode >= 400 || len(ticket.Ticket) == 0 {
-			c.AbortWithStatusJSON(res.StatusCode, gin.H{"error": string(body[:])})
+			message := string(body[:])
+			log.Println(message)
+			c.AbortWithStatusJSON(res.StatusCode, gin.H{"error": message})
 		} else {
 			markdownBody, listId, cardTitle := getTicketData(ticket)
 			err := createTrelloCard(cardTitle, markdownBody, listId)
