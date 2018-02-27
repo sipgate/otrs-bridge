@@ -121,6 +121,12 @@
   version = "v1.0.0"
 
 [[projects]]
+  name = "github.com/thoas/go-funk"
+  packages = ["."]
+  revision = "14304e8530de7dbb909c8305591b3a8370dd9dbb"
+  version = "0.2"
+
+[[projects]]
   name = "github.com/ugorji/go"
   packages = ["codec"]
   revision = "9831f2c3ac1068a78f50999a30db84270f647af6"
@@ -177,6 +183,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "e238d7cf2461e270e9edcec9ce54ccbac27fe8779d1342f1a70beadc00539cb4"
+  inputs-digest = "432229dbb7799847e21dbb02cf8a2e75c1f288fb59d63cb81fd66d2b100577fb"
   solver-name = "gps-cdcl"
   solver-version = 1

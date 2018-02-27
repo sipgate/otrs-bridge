@@ -2,6 +2,8 @@
 appKey = ""
 token = ""
 ticketCreateListId = ""
+ticketDoneListId = ""
+boardId = ""
 
 [otrs]
 user = ""

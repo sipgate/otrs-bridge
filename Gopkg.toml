@@ -48,3 +48,7 @@
 [[constraint]]
   branch = "master"
   name = "github.com/derveloper/trello"
+
+[[constraint]]
+  name = "github.com/thoas/go-funk"
+  version = "0.2.0"

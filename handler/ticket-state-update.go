@@ -3,7 +3,12 @@ package handler
 import (
 	"github.com/gin-gonic/gin"
 	"log"
-	"github.com/gin-gonic/gin/binding"
+	"net/http"
+	trelloClient "github.sipgate.net/sipgate/otrs-trello-bride/trello"
+	"strings"
+	"github.com/derveloper/trello"
+	"github.com/spf13/viper"
+	"github.com/thoas/go-funk"
 )
 
 type TicketStateUpdateEvent struct {
@@ -50,12 +55,44 @@ type TicketStateUpdateEvent struct {
 
 func TicketStateUpdateHandler() func(c *gin.Context) {
 	return func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"message": "pong",
-		})
-		var ticketUpdate TicketStateUpdateEvent
-		if err := c.ShouldBindWith(&ticketUpdate, binding.JSON); err == nil {
-			log.Println(ticketUpdate)
+		ticketId := c.Param("TicketId")
+		ticket, ok := GetTicketAndHandleFailure(ticketId, c)
+		if ok {
+			if strings.Contains(ticket.State, "closed") {
+				client := trelloClient.NewClient()
+				card, err := findCard(ticketId, client)
+				if err == nil {
+					err := card.MoveToList(viper.GetString("ticketDoneListId"), trello.Defaults())
+					if err == nil {
+						c.AbortWithStatus(http.StatusAccepted)
+					} else {
+						log.Println(err)
+						c.AbortWithError(http.StatusInternalServerError, err)
+					}
+				} else {
+					log.Println(err)
+					c.AbortWithError(http.StatusInternalServerError, err)
+				}
+			} else {
+				c.AbortWithStatus(http.StatusTeapot)
+			}
 		}
 	}
+}
+func findCard(ticketId string, client *trello.Client) (*trello.Card, error) {
+	board, err := client.GetBoard(viper.GetString("boardId"), trello.Defaults())
+	if err != nil {
+		return nil, err
+	}
+
+	cards, err := board.GetCards(trello.Defaults())
+	if err != nil {
+		return nil, err
+	}
+
+	firstFoundCard := funk.Find(cards, func(card *trello.Card) bool {
+		return strings.Contains(card.Name, "[#"+ticketId+"]")
+	})
+
+	return firstFoundCard.(*trello.Card), nil
 }
