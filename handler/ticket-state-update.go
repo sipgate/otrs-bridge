@@ -10,6 +10,9 @@ import (
 	"github.com/spf13/viper"
 	"github.com/thoas/go-funk"
 	"github.sipgate.net/sipgate/otrs-trello-bride/utils"
+	"github.sipgate.net/sipgate/otrs-trello-bride/otrs"
+	"github.com/lunny/html2md"
+	"github.com/pkg/errors"
 )
 
 func TicketStateUpdateHandler() func(c *gin.Context) {
@@ -21,6 +24,7 @@ func TicketStateUpdateHandler() func(c *gin.Context) {
 			card, foundCard, err := findCardByTicketId(ticketId, client)
 			if foundCard {
 				utils.DoIfNoErrorOrAbort(c, err, func() {
+					addCommentIfNecessary(card, ticket)
 					if strings.Contains(ticket.State, "closed as junk") {
 						utils.DoIfNoErrorOrAbort(c, err, func() {
 							DeleteCardAndRespond(client, card, c)
@@ -45,6 +49,18 @@ func TicketStateUpdateHandler() func(c *gin.Context) {
 		}
 	}
 }
+
+func addCommentIfNecessary(card *trello.Card, ticket otrs.Ticket) {
+	commentCount := card.Badges.Comments
+	articleCount := len(ticket.Article)
+	if articleCount - commentCount > 1 {
+		_, err := card.AddComment(html2md.Convert(ticket.Article[articleCount - 1].Body), trello.Defaults())
+		if err != nil {
+			log.Println(errors.Wrap(err, "Could not add comment"))
+		}
+	}
+}
+
 func DeleteCardAndRespond(client *trello.Client, card *trello.Card, c *gin.Context) {
 	type deleteResponse struct{}
 	var response deleteResponse
