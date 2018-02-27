@@ -62,7 +62,7 @@ func TicketStateUpdateHandler() func(c *gin.Context) {
 				client := trelloClient.NewClient()
 				card, err := findCard(ticketId, client)
 				if err == nil {
-					err := card.MoveToList(viper.GetString("ticketDoneListId"), trello.Defaults())
+					err := card.MoveToList(viper.GetString("trello.ticketDoneListId"), trello.Defaults())
 					if err == nil {
 						c.AbortWithStatus(http.StatusAccepted)
 					} else {
@@ -80,13 +80,16 @@ func TicketStateUpdateHandler() func(c *gin.Context) {
 	}
 }
 func findCard(ticketId string, client *trello.Client) (*trello.Card, error) {
-	board, err := client.GetBoard(viper.GetString("boardId"), trello.Defaults())
+	boardId := viper.GetString("trello.boardId")
+	board, err := client.GetBoard(boardId, trello.Defaults())
 	if err != nil {
+		log.Println("could not get board " + boardId, err)
 		return nil, err
 	}
 
 	cards, err := board.GetCards(trello.Defaults())
 	if err != nil {
+		log.Println("could not get cards", err)
 		return nil, err
 	}
 
