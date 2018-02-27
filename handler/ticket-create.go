@@ -35,6 +35,9 @@ func createTrelloCard(cardTitle string, markdownBody string, listId string) erro
 		Name:   cardTitle,
 		Desc:   markdownBody,
 		IDList: listId,
+		Labels: []*trello.Label {
+			{Name: "bald"},
+		},
 	}
 	client := trelloClient.NewClient()
 	err := client.CreateCard(&card, trello.Defaults())
