@@ -10,6 +10,7 @@ import (
 	"github.com/spf13/viper"
 	"log"
 	"fmt"
+	"github.com/pkg/errors"
 )
 
 func TicketCreateHandler() func(c *gin.Context) {
@@ -18,8 +19,17 @@ func TicketCreateHandler() func(c *gin.Context) {
 		ticket, ok := GetTicketAndHandleFailure(ticketId, c)
 		if ok {
 			markdownBody, listId, cardTitle := getTicketDataForCard(ticket)
-			err := createTrelloCard(cardTitle, markdownBody, listId)
-
+			client := trelloClient.NewClient()
+			err := createTrelloCard(cardTitle, markdownBody, listId, client)
+			card, cardFound, err := findCardByTicketId(ticketId, client)
+			if cardFound {
+				arguments := trello.Defaults()
+				arguments["idLabels"] = viper.GetString("trello.baldLabelId")
+				err := card.Update(arguments)
+				if err != nil {
+					log.Println(errors.Wrap(err, "Could not label card"))
+				}
+			}
 			if err == nil {
 				c.AbortWithStatus(http.StatusAccepted)
 			} else {
@@ -30,16 +40,12 @@ func TicketCreateHandler() func(c *gin.Context) {
 	}
 }
 
-func createTrelloCard(cardTitle string, markdownBody string, listId string) error {
+func createTrelloCard(cardTitle string, markdownBody string, listId string, client *trello.Client) error {
 	card := trello.Card{
 		Name:   cardTitle,
 		Desc:   markdownBody,
 		IDList: listId,
-		Labels: []*trello.Label {
-			{Name: "bald"},
-		},
 	}
-	client := trelloClient.NewClient()
 	err := client.CreateCard(&card, trello.Defaults())
 	return err
 }

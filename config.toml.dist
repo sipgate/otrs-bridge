@@ -4,6 +4,7 @@ token = ""
 ticketCreateListId = ""
 ticketDoneListId = ""
 boardId = ""
+baldLabelId = ""
 
 [otrs]
 user = ""

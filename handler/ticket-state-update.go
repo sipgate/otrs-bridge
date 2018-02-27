@@ -18,7 +18,7 @@ func TicketStateUpdateHandler() func(c *gin.Context) {
 		ticket, ok := GetTicketAndHandleFailure(ticketId, c)
 		if ok {
 			client := trelloClient.NewClient()
-			card, foundCard, err := findCard(ticketId, client)
+			card, foundCard, err := findCardByTicketId(ticketId, client)
 			if foundCard {
 				utils.DoIfNoErrorOrAbort(c, err, func() {
 					if strings.Contains(ticket.State, "closed as junk") {
@@ -61,7 +61,7 @@ func moveCardAndRespond(card *trello.Card, listId string, c *gin.Context) {
 	})
 }
 
-func findCard(ticketId string, client *trello.Client) (*trello.Card, bool, error) {
+func findCardByTicketId(ticketId string, client *trello.Client) (*trello.Card, bool, error) {
 	boardId := viper.GetString("trello.boardId")
 	board, err := client.GetBoard(boardId, trello.Defaults())
 	if err != nil {
