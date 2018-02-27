@@ -10,7 +10,6 @@ import (
 	"github.com/spf13/viper"
 	"github.com/thoas/go-funk"
 	"github.sipgate.net/sipgate/otrs-trello-bride/utils"
-	"errors"
 )
 
 func TicketStateUpdateHandler() func(c *gin.Context) {
@@ -19,30 +18,36 @@ func TicketStateUpdateHandler() func(c *gin.Context) {
 		ticket, ok := GetTicketAndHandleFailure(ticketId, c)
 		if ok {
 			client := trelloClient.NewClient()
-			card, err := findCard(ticketId, client)
-			utils.DoIfNoErrorOrAbort(c, err, func() {
-				if strings.Contains(ticket.State, "closed as junk") {
-					utils.DoIfNoErrorOrAbort(c, err, func() {
-						DeleteCardAndRespond(client, card, c)
-					})
-				} else if strings.Contains(ticket.State, "closed as announcement") {
-					card.Closed = true
-					err := card.Update(trello.Defaults())
-					utils.DoIfNoErrorOrAbort(c, err, func() {
-						c.AbortWithStatus(http.StatusAccepted)
-					})
-				} else if strings.Contains(ticket.State, "closed") {
-					listId := viper.GetString("trello.ticketDoneListId")
-					moveCardAndRespond(card, listId, c)
-				} else {
-					c.AbortWithStatus(http.StatusTeapot)
-				}
-			})
+			card, foundCard, err := findCard(ticketId, client)
+			if foundCard {
+				utils.DoIfNoErrorOrAbort(c, err, func() {
+					if strings.Contains(ticket.State, "closed as junk") {
+						utils.DoIfNoErrorOrAbort(c, err, func() {
+							DeleteCardAndRespond(client, card, c)
+						})
+					} else if strings.Contains(ticket.State, "closed as announcement") {
+						card.Closed = true
+						err := card.Update(trello.Defaults())
+						utils.DoIfNoErrorOrAbort(c, err, func() {
+							c.AbortWithStatus(http.StatusAccepted)
+						})
+					} else if strings.Contains(ticket.State, "closed") {
+						listId := viper.GetString("trello.ticketDoneListId")
+						moveCardAndRespond(card, listId, c)
+					} else {
+						c.AbortWithStatus(http.StatusTeapot)
+					}
+				})
+			} else {
+				c.AbortWithStatus(http.StatusTeapot)
+			}
 		}
 	}
 }
 func DeleteCardAndRespond(client *trello.Client, card *trello.Card, c *gin.Context) {
-	err := client.Delete("/1/cards/"+card.ID, trello.Defaults(), trello.Card{})
+	type deleteResponse struct{}
+	var response deleteResponse
+	err := client.Delete("/cards/"+card.ID, trello.Defaults(), &response)
 	utils.DoIfNoErrorOrAbort(c, err, func() {
 		c.AbortWithStatus(http.StatusAccepted)
 	})
@@ -55,18 +60,18 @@ func moveCardAndRespond(card *trello.Card, listId string, c *gin.Context) {
 	})
 }
 
-func findCard(ticketId string, client *trello.Client) (*trello.Card, error) {
+func findCard(ticketId string, client *trello.Client) (*trello.Card, bool, error) {
 	boardId := viper.GetString("trello.boardId")
 	board, err := client.GetBoard(boardId, trello.Defaults())
 	if err != nil {
 		log.Println("could not get board "+boardId, err)
-		return nil, err
+		return nil, false, err
 	}
 
 	cards, err := board.GetCards(trello.Defaults())
 	if err != nil {
 		log.Println("could not get cards", err)
-		return nil, err
+		return nil, false, err
 	}
 
 	firstFoundCard := funk.Find(cards, func(card *trello.Card) bool {
@@ -74,8 +79,8 @@ func findCard(ticketId string, client *trello.Client) (*trello.Card, error) {
 	})
 
 	if firstFoundCard != nil {
-		return firstFoundCard.(*trello.Card), nil
+		return firstFoundCard.(*trello.Card), true, nil
 	}
 
-	return nil, errors.New("no card found")
+	return nil, false, nil
 }
