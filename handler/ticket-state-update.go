@@ -26,8 +26,9 @@ func TicketStateUpdateHandler() func(c *gin.Context) {
 							DeleteCardAndRespond(client, card, c)
 						})
 					} else if strings.Contains(ticket.State, "closed as announcement") {
-						card.Closed = true
-						err := card.Update(trello.Defaults())
+						arguments := trello.Defaults()
+						arguments["closed"] = "true"
+						err := card.Update(arguments)
 						utils.DoIfNoErrorOrAbort(c, err, func() {
 							c.AbortWithStatus(http.StatusAccepted)
 						})
