@@ -29,4 +29,9 @@ After that you should be able to run the binary:
 
 The bridge defaults to port 8080 but can be overridden via the `PORT` environment variable.
 
-For more information please refer to the [gin docs](https://gin-gonic.github.io/gin/) 
+For more information please refer to the [gin docs](https://gin-gonic.github.io/gin/)
+
+## Hacking
+
+If you are using intellij or GoLand, simply open this directory as existing project.
+If using something else, just open the directory and start hacking.
