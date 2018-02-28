@@ -5,6 +5,7 @@ ticketCreateListId = ""
 ticketDoneListId = ""
 boardId = ""
 baldLabelId = ""
+ticketDoingListId = ""
 
 [otrs]
 user = ""

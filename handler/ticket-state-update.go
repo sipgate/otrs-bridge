@@ -39,6 +39,9 @@ func TicketStateUpdateHandler() func(c *gin.Context) {
 					} else if strings.Contains(ticket.State, "closed") {
 						listId := viper.GetString("trello.ticketDoneListId")
 						moveCardAndRespond(card, listId, c)
+					} else if strings.Contains(ticket.State, "open") {
+						listId := viper.GetString("trello.ticketDoingListId")
+						moveCardAndRespond(card, listId, c)
 					} else {
 						c.AbortWithStatus(http.StatusTeapot)
 					}
