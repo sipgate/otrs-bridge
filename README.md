@@ -33,7 +33,7 @@ For more information please refer to the [gin docs](https://gin-gonic.github.io/
 
 ## OTRS Setup
 
-Import the webservice definitions from the `otrs-webservice` directory, make sure to use the correct URL of the bridge service
+Import the webservice definitions from the [otrs-webservices](otrs-webservices) directory, make sure to use the correct URL of the bridge service
 
 ## Hacking
 
