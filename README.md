@@ -31,6 +31,10 @@ The bridge defaults to port 8080 but can be overridden via the `PORT` environmen
 
 For more information please refer to the [gin docs](https://gin-gonic.github.io/gin/)
 
+## OTRS Setup
+
+Import the webservice definitions from the `otrs-webservice` directory, make sure to use the correct URL of the bridge service
+
 ## Hacking
 
 If you are using intellij or GoLand, simply open this directory as existing project.

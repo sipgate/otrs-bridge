@@ -8,5 +8,6 @@ baldLabelId = ""
 ticketDoingListId = ""
 
 [otrs]
+baseUrl = ""
 user = ""
 password = ""

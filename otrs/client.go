@@ -11,12 +11,9 @@ import (
 	"github.com/spf13/viper"
 )
 
-const (
-	otrsBaseUrl = "https://tickets.sipgate.net/otrs/nph-genericinterface.pl/Webservice/Trello"
-)
-
 func otrsRequest(path string, body string) (*http.Response, error) {
 	user := viper.GetString("otrs.user")
+	otrsBaseUrl := viper.GetString("otrs.baseUrl")
 	password := viper.GetString("otrs.password")
 	credentials := "?UserLogin="+user+"&Password="+password
 	req, err := http.NewRequest("POST", otrsBaseUrl+path+credentials, bytes.NewBufferString(body))
