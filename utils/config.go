@@ -3,6 +3,7 @@ package utils
 import (
 	"fmt"
 	"github.com/spf13/viper"
+	"github.com/fsnotify/fsnotify"
 )
 
 func ReadConfig() {
@@ -12,4 +13,8 @@ func ReadConfig() {
 	if err != nil { // Handle errors reading the config file
 		panic(fmt.Errorf("Fatal error config file: %s \n", err))
 	}
+	viper.WatchConfig()
+	viper.OnConfigChange(func(e fsnotify.Event) {
+		fmt.Println("Config file changed:", e.Name)
+	})
 }
