@@ -25,31 +25,34 @@ func TicketStateUpdateHandler() func(c *gin.Context) {
 			if foundCard {
 				utils.DoIfNoErrorOrAbort(c, err, func() {
 					addCommentIfNecessary(card, ticket)
-					if strings.Contains(ticket.State, "closed as junk") {
-						utils.DoIfNoErrorOrAbort(c, err, func() {
-							DeleteCardAndRespond(client, card, c)
-						})
-					} else if strings.Contains(ticket.State, "closed as announcement") {
-						arguments := trello.Defaults()
-						arguments["closed"] = "true"
-						err := card.Update(arguments)
-						utils.DoIfNoErrorOrAbort(c, err, func() {
-							c.AbortWithStatus(http.StatusAccepted)
-						})
-					} else if strings.Contains(ticket.State, "closed") {
-						listId := viper.GetString("trello.ticketDoneListId")
-						moveCardAndRespond(card, listId, c)
-					} else if strings.Contains(ticket.State, "open") {
-						listId := viper.GetString("trello.ticketDoingListId")
-						moveCardAndRespond(card, listId, c)
-					} else {
-						c.AbortWithStatus(http.StatusTeapot)
-					}
+					processCardStateUpdate(ticket, c, err, client, card)
 				})
 			} else {
 				c.AbortWithStatus(http.StatusTeapot)
 			}
 		}
+	}
+}
+func processCardStateUpdate(ticket otrs.Ticket, c *gin.Context, err error, client *trello.Client, card *trello.Card) {
+	if strings.Contains(ticket.State, "closed as junk") {
+		utils.DoIfNoErrorOrAbort(c, err, func() {
+			DeleteCardAndRespond(client, card, c)
+		})
+	} else if strings.Contains(ticket.State, "closed as announcement") {
+		arguments := trello.Defaults()
+		arguments["closed"] = "true"
+		err := card.Update(arguments)
+		utils.DoIfNoErrorOrAbort(c, err, func() {
+			c.AbortWithStatus(http.StatusAccepted)
+		})
+	} else if strings.Contains(ticket.State, "closed") {
+		listId := viper.GetString("trello.ticketDoneListId")
+		moveCardAndRespond(card, listId, c)
+	} else if strings.Contains(ticket.State, "open") {
+		listId := viper.GetString("trello.ticketDoingListId")
+		moveCardAndRespond(card, listId, c)
+	} else {
+		c.AbortWithStatus(http.StatusTeapot)
 	}
 }
 
