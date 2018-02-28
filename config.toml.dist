@@ -6,6 +6,7 @@ ticketDoneListId = ""
 boardId = ""
 soonLabelId = ""
 ticketDoingListId = ""
+proxy = ""
 
 [otrs]
 baseUrl = ""
