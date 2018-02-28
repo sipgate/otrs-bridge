@@ -5,6 +5,7 @@ import (
 	"github.com/spf13/viper"
 	"github.com/fsnotify/fsnotify"
 	"os"
+	"log"
 )
 
 func ReadConfig() {
@@ -21,6 +22,6 @@ func ReadConfig() {
 	}
 	viper.WatchConfig()
 	viper.OnConfigChange(func(e fsnotify.Event) {
-		fmt.Println("Config file changed:", e.Name)
+		log.Println("Config file changed:", e.Name)
 	})
 }
