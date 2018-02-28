@@ -24,7 +24,7 @@ func TicketCreateHandler() func(c *gin.Context) {
 			card, cardFound, err := findCardByTicketId(ticketId, client)
 			if cardFound {
 				arguments := trello.Defaults()
-				arguments["idLabels"] = viper.GetString("trello.baldLabelId")
+				arguments["idLabels"] = viper.GetString("trello.soonLabelId")
 				err := card.Update(arguments)
 				if err != nil {
 					log.Println(errors.Wrap(err, "Could not label card"))
