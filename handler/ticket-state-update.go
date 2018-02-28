@@ -59,8 +59,8 @@ func processCardStateUpdate(ticket otrs.Ticket, c *gin.Context, err error, clien
 func addCommentIfNecessary(card *trello.Card, ticket otrs.Ticket) {
 	commentCount := card.Badges.Comments
 	articleCount := len(ticket.Article)
-	if articleCount - commentCount > 1 {
-		_, err := card.AddComment(html2md.Convert(ticket.Article[articleCount - 1].Body), trello.Defaults())
+	if articleCount-commentCount > 1 {
+		_, err := card.AddComment(html2md.Convert(ticket.Article[articleCount-1].Body), trello.Defaults())
 		if err != nil {
 			log.Println(errors.Wrap(err, "Could not add comment"))
 		}

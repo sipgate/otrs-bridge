@@ -51,7 +51,8 @@ func createTrelloCard(cardTitle string, markdownBody string, listId string, clie
 }
 
 func getTicketDataForCard(ticket otrs.Ticket) (string, string, string) {
-	originalTicketUrl := "***Original ticket***: http://tickets.sipgate.net/otrs/index.pl?Action=AgentTicketZoom;TicketID=" + ticket.TicketID
+	otrsBaseUrl := viper.GetString("otrs.baseUrl")
+	originalTicketUrl := "***Original ticket***: " + otrsBaseUrl + "/index.pl?Action=AgentTicketZoom;TicketID=" + ticket.TicketID
 	markdownBody := html2md.Convert(ticket.Article[0].Body)
 	markdownBody = originalTicketUrl + "\n\n---\n\n" + markdownBody
 	listId := viper.GetString("trello.ticketCreateListId")

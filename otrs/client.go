@@ -14,9 +14,11 @@ import (
 func otrsRequest(path string, body string) (*http.Response, error) {
 	user := viper.GetString("otrs.user")
 	otrsBaseUrl := viper.GetString("otrs.baseUrl")
+	otrsWebservicePath := viper.GetString("otrs.webservicePath")
 	password := viper.GetString("otrs.password")
-	credentials := "?UserLogin="+user+"&Password="+password
-	req, err := http.NewRequest("POST", otrsBaseUrl+path+credentials, bytes.NewBufferString(body))
+	credentials := "?UserLogin=" + user + "&Password=" + password
+	fullPath := otrsBaseUrl + otrsWebservicePath + path + credentials
+	req, err := http.NewRequest("POST", fullPath, bytes.NewBufferString(body))
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -45,7 +47,7 @@ type Ticket struct {
 	StateID        string `json:"StateID"`
 	SLAID          string `json:"SLAID"`
 	CustomerUserID string `json:"CustomerUserID"`
-	Article        []struct {
+	Article []struct {
 		ResponsibleID          string      `json:"ResponsibleID"`
 		Owner                  string      `json:"Owner"`
 		InReplyTo              string      `json:"InReplyTo"`
@@ -134,7 +136,7 @@ type TicketResponse struct {
 }
 
 func GetTicket(id string) (TicketResponse, *http.Response, []byte, error) {
-	res, err := otrsRequest("/Ticket/" + id, "{\"AllArticles\":1}")
+	res, err := otrsRequest("/Ticket/"+id, "{\"AllArticles\":1}")
 	var ticket TicketResponse
 	if err == nil {
 		body, err := ioutil.ReadAll(res.Body)

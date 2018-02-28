@@ -30,7 +30,7 @@ func UpdateAllCardsHandler() func(c *gin.Context) {
 				})
 
 				for _, id := range ticketIds {
-					_, err := http.Post("http://localhost:8080/TicketStateUpdate/" + id, "application/json", nil)
+					_, err := http.Post("http://localhost:8080/TicketStateUpdate/"+id, "application/json", nil)
 					if err == nil {
 						log.Println("updated card for ticket " + id)
 					} else {
