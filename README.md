@@ -12,7 +12,7 @@ and the [dep](https://golang.github.io/dep/docs/installation.html) dependency ma
 
 After installing the prerequisites simply run
 ```bash
-./build.sh
+./scripts/build.sh
 ```
 
 This will produce the `otrs-trello-bridge` statically linked binary
