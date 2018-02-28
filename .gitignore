@@ -116,3 +116,4 @@ vendor/
 config.toml
 
 otrs-trello-bride
+/config.sandbox.toml
