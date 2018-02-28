@@ -8,7 +8,9 @@ import (
 	"github.sipgate.net/sipgate/otrs-trello-bride/utils"
 	"github.com/thoas/go-funk"
 	"regexp"
-	"errors"
+	"log"
+	"github.com/pkg/errors"
+	"net/http"
 )
 
 func UpdateAllCardsHandler() func(c *gin.Context) {
@@ -18,9 +20,25 @@ func UpdateAllCardsHandler() func(c *gin.Context) {
 		utils.DoIfNoErrorOrAbort(c, err, func() {
 			cards, err := board.GetCards(trello.Defaults())
 			utils.DoIfNoErrorOrAbort(c, err, func() {
-				funk.Map(cards, func(card *trello.Card) string {
-					return card.Name
+				ticketIds := funk.Map(cards, func(card *trello.Card) string {
+					id, _ := extractTicketId(card.Name)
+					return id
+				}).([]string)
+
+				ticketIds = funk.FilterString(ticketIds, func(id string) bool {
+					return id != ""
 				})
+
+				for _, id := range ticketIds {
+					_, err := http.Post("http://localhost:8080/TicketStateUpdate/" + id, "application/json", nil)
+					if err == nil {
+						log.Println("updated card for ticket " + id)
+					} else {
+						log.Println(errors.Wrapf(err, "could not update card for ticket %s", id))
+					}
+				}
+
+				c.AbortWithStatus(http.StatusAccepted)
 			})
 		})
 	}
@@ -31,6 +49,7 @@ func extractTicketId(name string) (string, error) {
 	res := re.FindAllStringSubmatch(name, 1)
 
 	if err != nil {
+		log.Println(errors.Wrap(err, "could not compile regexp pattern"))
 		return "", err
 	}
 
