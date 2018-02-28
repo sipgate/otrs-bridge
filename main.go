@@ -10,7 +10,7 @@ func main() {
 	utils.ReadConfig()
 	r := gin.Default()
 	r.POST("/TicketCreate/:TicketId", handler.TicketCreateHandler())
-	r.POST("/TicketDelete/:TicketId", handler.TicketDeleteHandler())
+	r.POST("/UpdateAllCards", handler.UpdateAllCardsHandler())
 	r.POST("/TicketStateUpdate/:TicketId", handler.TicketStateUpdateHandler())
 	r.Run() // listen and serve on 0.0.0.0:8080
 }
