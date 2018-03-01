@@ -1,11 +1,11 @@
 [trello]
 appKey = ""
 token = ""
-ticketCreatelistID = ""
-ticketDonelistID = ""
+ticketCreateListID = ""
+ticketDoneListID = ""
 boardID = ""
 soonLabelId = ""
-ticketDoinglistID = ""
+ticketDoingListID = ""
 proxy = ""
 
 [otrs]

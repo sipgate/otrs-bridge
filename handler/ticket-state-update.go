@@ -48,10 +48,10 @@ func processCardStateUpdate(ticket otrs.Ticket, c *gin.Context, err error, clien
 			c.AbortWithStatus(http.StatusAccepted)
 		})
 	} else if strings.Contains(ticket.State, "closed") {
-		listID := viper.GetString("trello.ticketDonelistID")
+		listID := viper.GetString("trello.ticketDoneListID")
 		moveCardAndRespond(card, listID, c)
 	} else if strings.Contains(ticket.State, "open") {
-		listID := viper.GetString("trello.ticketDoinglistID")
+		listID := viper.GetString("trello.ticketDoingListID")
 		moveCardAndRespond(card, listID, c)
 	} else {
 		c.AbortWithStatus(http.StatusTeapot)

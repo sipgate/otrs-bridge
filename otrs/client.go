@@ -94,7 +94,7 @@ type Ticket struct {
 		Cc                     string      `json:"Cc"`
 		UntilTime              int         `json:"UntilTime"`
 		EscalationTime         string      `json:"EscalationTime"`
-		ticketID               string      `json:"ticketID"`
+		TicketID               string      `json:"ticketID"`
 		Lock                   string      `json:"Lock"`
 		MimeType               string      `json:"MimeType"`
 		TicketNumber           string      `json:"TicketNumber"`
@@ -122,7 +122,7 @@ type Ticket struct {
 	Age                    int    `json:"Age"`
 	UntilTime              int    `json:"UntilTime"`
 	EscalationTime         string `json:"EscalationTime"`
-	ticketID               string `json:"ticketID"`
+	TicketID               string `json:"ticketID"`
 	Lock                   string `json:"Lock"`
 	TicketNumber           string `json:"TicketNumber"`
 	EscalationResponseTime string `json:"EscalationResponseTime"`
