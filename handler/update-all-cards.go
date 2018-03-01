@@ -2,10 +2,10 @@ package handler
 
 import (
 	"github.com/gin-gonic/gin"
-	trelloClient "github.sipgate.net/sipgate/otrs-trello-bride/trello"
+	trelloClient "github.com/sipgate/otrs-trello-bridge/trello"
 	"github.com/spf13/viper"
 	"github.com/derveloper/trello"
-	"github.sipgate.net/sipgate/otrs-trello-bride/utils"
+	"github.com/sipgate/otrs-trello-bridge/utils"
 	"github.com/thoas/go-funk"
 	"regexp"
 	"log"

@@ -1,7 +1,7 @@
 package handler
 
 import (
-	"github.sipgate.net/sipgate/otrs-trello-bride/otrs"
+	"github.com/sipgate/otrs-trello-bridge/otrs"
 	"log"
 	"net/http"
 	"github.com/gin-gonic/gin"

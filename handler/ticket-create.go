@@ -3,8 +3,8 @@ package handler
 import (
 	"github.com/gin-gonic/gin"
 	"net/http"
-	"github.sipgate.net/sipgate/otrs-trello-bride/otrs"
-	trelloClient "github.sipgate.net/sipgate/otrs-trello-bride/trello"
+	"github.com/sipgate/otrs-trello-bridge/otrs"
+	trelloClient "github.com/sipgate/otrs-trello-bridge/trello"
 	"github.com/derveloper/trello"
 	"github.com/lunny/html2md"
 	"github.com/spf13/viper"

@@ -2,8 +2,8 @@ package main
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.sipgate.net/sipgate/otrs-trello-bride/handler"
-	"github.sipgate.net/sipgate/otrs-trello-bride/utils"
+	"github.com/sipgate/otrs-trello-bridge/handler"
+	"github.com/sipgate/otrs-trello-bridge/utils"
 )
 
 func main() {
