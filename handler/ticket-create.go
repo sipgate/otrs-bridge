@@ -1,16 +1,17 @@
 package handler
 
 import (
-	"github.com/gin-gonic/gin"
+	"fmt"
+	"log"
 	"net/http"
+
+	"github.com/derveloper/trello"
+	"github.com/gin-gonic/gin"
+	"github.com/lunny/html2md"
+	"github.com/pkg/errors"
 	"github.com/sipgate/otrs-trello-bridge/otrs"
 	trelloClient "github.com/sipgate/otrs-trello-bridge/trello"
-	"github.com/derveloper/trello"
-	"github.com/lunny/html2md"
 	"github.com/spf13/viper"
-	"log"
-	"fmt"
-	"github.com/pkg/errors"
 )
 
 func TicketCreateHandler() func(c *gin.Context) {

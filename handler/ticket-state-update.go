@@ -1,18 +1,19 @@
 package handler
 
 import (
-	"github.com/gin-gonic/gin"
 	"log"
 	"net/http"
-	trelloClient "github.com/sipgate/otrs-trello-bridge/trello"
 	"strings"
+
 	"github.com/derveloper/trello"
-	"github.com/spf13/viper"
-	"github.com/thoas/go-funk"
-	"github.com/sipgate/otrs-trello-bridge/utils"
-	"github.com/sipgate/otrs-trello-bridge/otrs"
+	"github.com/gin-gonic/gin"
 	"github.com/lunny/html2md"
 	"github.com/pkg/errors"
+	"github.com/sipgate/otrs-trello-bridge/otrs"
+	trelloClient "github.com/sipgate/otrs-trello-bridge/trello"
+	"github.com/sipgate/otrs-trello-bridge/utils"
+	"github.com/spf13/viper"
+	"github.com/thoas/go-funk"
 )
 
 func TicketStateUpdateHandler() func(c *gin.Context) {

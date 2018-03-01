@@ -2,10 +2,11 @@ package utils
 
 import (
 	"fmt"
-	"github.com/spf13/viper"
-	"github.com/fsnotify/fsnotify"
-	"os"
 	"log"
+	"os"
+
+	"github.com/fsnotify/fsnotify"
+	"github.com/spf13/viper"
 )
 
 func ReadConfig() {

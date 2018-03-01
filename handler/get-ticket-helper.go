@@ -1,10 +1,11 @@
 package handler
 
 import (
-	"github.com/sipgate/otrs-trello-bridge/otrs"
 	"log"
 	"net/http"
+
 	"github.com/gin-gonic/gin"
+	"github.com/sipgate/otrs-trello-bridge/otrs"
 )
 
 func GetTicketAndHandleFailure(ticketId string, c *gin.Context) (otrs.Ticket, bool) {

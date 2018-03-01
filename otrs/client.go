@@ -1,14 +1,15 @@
 package otrs
 
 import (
-	"net/http"
 	"bytes"
-	"golang.org/x/net/publicsuffix"
-	"net/http/cookiejar"
-	"log"
-	"io/ioutil"
 	"encoding/json"
+	"io/ioutil"
+	"log"
+	"net/http"
+	"net/http/cookiejar"
+
 	"github.com/spf13/viper"
+	"golang.org/x/net/publicsuffix"
 )
 
 func otrsRequest(path string, body string) (*http.Response, error) {

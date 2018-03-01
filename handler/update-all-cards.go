@@ -1,16 +1,17 @@
 package handler
 
 import (
-	"github.com/gin-gonic/gin"
-	trelloClient "github.com/sipgate/otrs-trello-bridge/trello"
-	"github.com/spf13/viper"
-	"github.com/derveloper/trello"
-	"github.com/sipgate/otrs-trello-bridge/utils"
-	"github.com/thoas/go-funk"
-	"regexp"
 	"log"
-	"github.com/pkg/errors"
 	"net/http"
+	"regexp"
+
+	"github.com/derveloper/trello"
+	"github.com/gin-gonic/gin"
+	"github.com/pkg/errors"
+	trelloClient "github.com/sipgate/otrs-trello-bridge/trello"
+	"github.com/sipgate/otrs-trello-bridge/utils"
+	"github.com/spf13/viper"
+	"github.com/thoas/go-funk"
 )
 
 func UpdateAllCardsHandler() func(c *gin.Context) {

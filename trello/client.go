@@ -1,12 +1,13 @@
 package trello
 
 import (
-	"github.com/derveloper/trello"
-	"github.com/spf13/viper"
-	"net/url"
-	"net/http"
 	"log"
+	"net/http"
+	"net/url"
+
+	"github.com/derveloper/trello"
 	"github.com/pkg/errors"
+	"github.com/spf13/viper"
 )
 
 func NewClient() *trello.Client {
