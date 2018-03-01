@@ -12,6 +12,10 @@ before_install:
 install:
   - dep ensure
 
+cache:
+  directories:
+    - $GOPATH/pkg/dep
+
 go:
   - master
 script: scripts/build.sh
