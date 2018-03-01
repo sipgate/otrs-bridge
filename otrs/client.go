@@ -49,7 +49,7 @@ type Ticket struct {
 	StateID        string `json:"StateID"`
 	SLAID          string `json:"SLAID"`
 	CustomerUserID string `json:"CustomerUserID"`
-	Article []struct {
+	Article        []struct {
 		ResponsibleID          string      `json:"ResponsibleID"`
 		Owner                  string      `json:"Owner"`
 		InReplyTo              string      `json:"InReplyTo"`
