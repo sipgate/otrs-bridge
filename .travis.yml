@@ -1,0 +1,11 @@
+language: go
+go:
+- master
+script: scripts/build.sh
+deploy:
+  provider: releases
+  api_key:
+    secure: AaYmtGIfrkAuoE8MpXpoOhfIrDqiFVUT6BUFiCYHXlMB2a+UhbkzmyxAr8BILqO4aQs6g3+OoDnZjW+YfLC8gsZvmkFAfKSsQ9oafjsBqn4LXMLrBq5N5ymt0KA5enq7ZOHKSEPPtkJ/tYaejT5CfU4X1j8m8jbkfcftdD+v2BELchFmh8jVqSLNz25WLjUMJPLDy866DGunIhgCdifQvscE6nSDqdZM7/GMZ6HiTQ8xIL5pRbuAaqAeIZ4BI9q47COVyVJEEbwGMqdqcEpzaxGysDYaCqbw2ukIEiqc6UtJaeAxcs9X+JRXtp3EyASuKktq9Fn9zNkQ4UqNuOsGanAz47kHvgVUEH7giz9iwOutemQofZRumwtQ6HxTwktKqKwCsSrZ2xfmldFMBrSRTy/LK0APjiCX5aTm095CGI2Syox0nmo+t+39RFPCf/NILnlF/hv1BaUszqNGIEDS2YQr8X6qY2w9fTgm3flMtsC4du3ak0AuBmyBzpvsVa++nBCGSq2PYBdGcMK0n+85xwynZlktyW8c/3oSF5BpJht49wJlARxEwqq49EowSgx0eS2ZTXbY9m8A9eAVZoPjtjeNTM5779OT+Q0FlU4yVRR1dDE5z+Cb1C9LPpOtUQjA5/VIERuoSbbTYNB7rhWwYW+ru3Lyiz40abdOZw+54IA=
+  file: otrs-trello-bridge
+  on:
+    repo: sipgate/otrs-trello-bridge
