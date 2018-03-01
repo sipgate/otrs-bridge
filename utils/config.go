@@ -3,7 +3,6 @@ package utils
 import (
 	"fmt"
 	"log"
-	"os"
 
 	"github.com/fsnotify/fsnotify"
 	"github.com/spf13/viper"
