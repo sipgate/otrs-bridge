@@ -11,12 +11,7 @@ import (
 
 // ReadConfig initializes the viper config and turns on config watching
 func ReadConfig() {
-	env := os.Getenv("APPLICATION_ENV")
-	if env != "production" {
-		viper.SetConfigName("config.sandbox")
-	} else {
-		viper.SetConfigName("config")
-	}
+	viper.SetConfigName("config")
 	viper.AddConfigPath(".")
 	err := viper.ReadInConfig()
 	if err != nil {
