@@ -4,6 +4,7 @@
 
 > Keep a trello board in sync with your OTRS
 
+[![Build Status](https://travis-ci.org/sipgate/otrs-trello-bridge.svg?branch=master)](https://travis-ci.org/sipgate/otrs-trello-bridge)
 [![Go Report Card](https://goreportcard.com/badge/github.com/sipgate/otrs-trello-bridge)](https://goreportcard.com/report/github.com/sipgate/otrs-trello-bridge)
 
 ## Building
