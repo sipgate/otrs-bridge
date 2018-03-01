@@ -14,15 +14,16 @@ import (
 	"github.com/spf13/viper"
 )
 
+//TicketCreateHandler handles ticket creation events from otrs
 func TicketCreateHandler() func(c *gin.Context) {
 	return func(c *gin.Context) {
-		ticketId := c.Param("TicketId")
-		ticket, ok := GetTicketAndHandleFailure(ticketId, c)
+		ticketID := c.Param("ticketID")
+		ticket, ok := GetTicketAndHandleFailure(ticketID, c)
 		if ok {
-			markdownBody, listId, cardTitle := getTicketDataForCard(ticket)
+			markdownBody, listID, cardTitle := getTicketDataForCard(ticket)
 			client := trelloClient.NewClient()
-			err := createTrelloCard(cardTitle, markdownBody, listId, client)
-			card, cardFound, err := findCardByTicketId(ticketId, client)
+			err := createTrelloCard(cardTitle, markdownBody, listID, client)
+			card, cardFound, err := findCardByTicketID(ticketID, client)
 			if cardFound {
 				arguments := trello.Defaults()
 				arguments["idLabels"] = viper.GetString("trello.soonLabelId")
@@ -41,22 +42,22 @@ func TicketCreateHandler() func(c *gin.Context) {
 	}
 }
 
-func createTrelloCard(cardTitle string, markdownBody string, listId string, client *trello.Client) error {
+func createTrelloCard(cardTitle string, markdownBody string, listID string, client *trello.Client) error {
 	card := trello.Card{
 		Name:   cardTitle,
 		Desc:   markdownBody,
-		IDList: listId,
+		IDList: listID,
 	}
 	err := client.CreateCard(&card, trello.Defaults())
 	return err
 }
 
 func getTicketDataForCard(ticket otrs.Ticket) (string, string, string) {
-	otrsBaseUrl := viper.GetString("otrs.baseUrl")
-	originalTicketUrl := "***Original ticket***: " + otrsBaseUrl + "/index.pl?Action=AgentTicketZoom;TicketID=" + ticket.TicketID
+	otrsBaseURL := viper.GetString("otrs.baseUrl")
+	originalTicketURL := "***Original ticket***: " + otrsBaseURL + "/index.pl?Action=AgentTicketZoom;ticketID=" + ticket.ticketID
 	markdownBody := html2md.Convert(ticket.Article[0].Body)
-	markdownBody = originalTicketUrl + "\n\n---\n\n" + markdownBody
-	listId := viper.GetString("trello.ticketCreateListId")
-	cardTitle := fmt.Sprintf("[#%s] %s", ticket.TicketID, ticket.Title)
-	return markdownBody, listId, cardTitle
+	markdownBody = originalTicketURL + "\n\n---\n\n" + markdownBody
+	listID := viper.GetString("trello.ticketCreatelistID")
+	cardTitle := fmt.Sprintf("[#%s] %s", ticket.ticketID, ticket.Title)
+	return markdownBody, listID, cardTitle
 }

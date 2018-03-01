@@ -9,6 +9,7 @@ import (
 	"github.com/spf13/viper"
 )
 
+// ReadConfig initializes the viper config and turns on config watching
 func ReadConfig() {
 	env := os.Getenv("APPLICATION_ENV")
 	if env != "production" {
@@ -19,7 +20,7 @@ func ReadConfig() {
 	viper.AddConfigPath(".")
 	err := viper.ReadInConfig()
 	if err != nil {
-		panic(fmt.Errorf("Fatal error config file: %s \n", err))
+		panic(fmt.Errorf("fatal error config file: %s", err))
 	}
 	viper.WatchConfig()
 	viper.OnConfigChange(func(e fsnotify.Event) {

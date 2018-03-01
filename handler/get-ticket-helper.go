@@ -8,8 +8,9 @@ import (
 	"github.com/sipgate/otrs-trello-bridge/otrs"
 )
 
-func GetTicketAndHandleFailure(ticketId string, c *gin.Context) (otrs.Ticket, bool) {
-	ticket, res, body, getTicketErr := otrs.GetTicket(ticketId)
+// GetTicketAndHandleFailure tries to get a Ticket from otrs, otherwise abort response with error
+func GetTicketAndHandleFailure(ticketID string, c *gin.Context) (otrs.Ticket, bool) {
+	ticket, res, body, getTicketErr := otrs.GetTicket(ticketID)
 	if getTicketErr != nil {
 		log.Fatal(getTicketErr)
 		c.AbortWithError(http.StatusInternalServerError, getTicketErr)

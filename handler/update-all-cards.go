@@ -14,23 +14,24 @@ import (
 	"github.com/thoas/go-funk"
 )
 
+// UpdateAllCardsHandler calls TicketStateUpdate for all cards in board
 func UpdateAllCardsHandler() func(c *gin.Context) {
 	return func(c *gin.Context) {
 		client := trelloClient.NewClient()
-		board, err := client.GetBoard(viper.GetString("trello.boardId"), trello.Defaults())
+		board, err := client.GetBoard(viper.GetString("trello.boardID"), trello.Defaults())
 		utils.DoIfNoErrorOrAbort(c, err, func() {
 			cards, err := board.GetCards(trello.Defaults())
 			utils.DoIfNoErrorOrAbort(c, err, func() {
-				ticketIds := funk.Map(cards, func(card *trello.Card) string {
-					id, _ := extractTicketId(card.Name)
+				ticketIDs := funk.Map(cards, func(card *trello.Card) string {
+					id, _ := extractTicketID(card.Name)
 					return id
 				}).([]string)
 
-				ticketIds = funk.FilterString(ticketIds, func(id string) bool {
+				ticketIDs = funk.FilterString(ticketIDs, func(id string) bool {
 					return id != ""
 				})
 
-				for _, id := range ticketIds {
+				for _, id := range ticketIDs {
 					_, err := http.Post("http://localhost:8080/TicketStateUpdate/"+id, "application/json", nil)
 					if err == nil {
 						log.Println("updated card for ticket " + id)
@@ -45,7 +46,7 @@ func UpdateAllCardsHandler() func(c *gin.Context) {
 	}
 }
 
-func extractTicketId(name string) (string, error) {
+func extractTicketID(name string) (string, error) {
 	re, err := regexp.Compile(`^\[#(\d+)].*`)
 	res := re.FindAllStringSubmatch(name, 1)
 
@@ -56,7 +57,7 @@ func extractTicketId(name string) (string, error) {
 
 	if len(res) == 1 {
 		return res[0][1], nil
-	} else {
-		return "", errors.New("could not extract ticketId from '" + name + "'")
 	}
+
+	return "", errors.New("could not extract ticketID from '" + name + "'")
 }

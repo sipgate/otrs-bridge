@@ -27,5 +27,5 @@ Requester:
       Host: http://localhost:8080
       InvokerControllerMapping:
         trello:
-          Controller: /TicketStateUpdate/:TicketID
+          Controller: /TicketStateUpdate/:ticketID
     Type: HTTP::REST

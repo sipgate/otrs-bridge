@@ -14,11 +14,11 @@ import (
 
 func otrsRequest(path string, body string) (*http.Response, error) {
 	user := viper.GetString("otrs.user")
-	otrsBaseUrl := viper.GetString("otrs.baseUrl")
+	otrsBaseURL := viper.GetString("otrs.baseUrl")
 	otrsWebservicePath := viper.GetString("otrs.webservicePath")
 	password := viper.GetString("otrs.password")
 	credentials := "?UserLogin=" + user + "&Password=" + password
-	fullPath := otrsBaseUrl + otrsWebservicePath + path + credentials
+	fullPath := otrsBaseURL + otrsWebservicePath + path + credentials
 	req, err := http.NewRequest("POST", fullPath, bytes.NewBufferString(body))
 	if err != nil {
 		log.Fatal(err)
@@ -33,6 +33,7 @@ func otrsRequest(path string, body string) (*http.Response, error) {
 	return client.Do(req)
 }
 
+// The Ticket type for representing a single otrs ticket
 type Ticket struct {
 	ResponsibleID  string `json:"ResponsibleID"`
 	Owner          string `json:"Owner"`
@@ -93,7 +94,7 @@ type Ticket struct {
 		Cc                     string      `json:"Cc"`
 		UntilTime              int         `json:"UntilTime"`
 		EscalationTime         string      `json:"EscalationTime"`
-		TicketID               string      `json:"TicketID"`
+		ticketID               string      `json:"ticketID"`
 		Lock                   string      `json:"Lock"`
 		MimeType               string      `json:"MimeType"`
 		TicketNumber           string      `json:"TicketNumber"`
@@ -121,7 +122,7 @@ type Ticket struct {
 	Age                    int    `json:"Age"`
 	UntilTime              int    `json:"UntilTime"`
 	EscalationTime         string `json:"EscalationTime"`
-	TicketID               string `json:"TicketID"`
+	ticketID               string `json:"ticketID"`
 	Lock                   string `json:"Lock"`
 	TicketNumber           string `json:"TicketNumber"`
 	EscalationResponseTime string `json:"EscalationResponseTime"`
@@ -132,10 +133,12 @@ type Ticket struct {
 	LockID                 string `json:"LockID"`
 }
 
+// The TicketResponse type for representing a otrs ticket response
 type TicketResponse struct {
 	Ticket []Ticket `json:"Ticket"`
 }
 
+// GetTicket fetches a ticket by id from otrs
 func GetTicket(id string) (TicketResponse, *http.Response, []byte, error) {
 	res, err := otrsRequest("/Ticket/"+id, "{\"AllArticles\":1}")
 	var ticket TicketResponse
