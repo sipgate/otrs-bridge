@@ -26,7 +26,9 @@ func GetTicketAndHandleFailure(ticketID string, c *gin.Context) (otrs.Ticket, bo
 
 	queues := viper.GetStringSlice("otrs.queues")
 
-	if funk.ContainsString(queues, ticket.Ticket[0].Queue) {
+	if len(queues) == 0 {
+		return ticket.Ticket[0], true
+	} else if funk.ContainsString(queues, ticket.Ticket[0].Queue) {
 		return ticket.Ticket[0], true
 	}
 
