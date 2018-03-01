@@ -13,3 +13,4 @@ baseUrl = ""
 webservicePath = ""
 user = ""
 password = ""
+queues = []

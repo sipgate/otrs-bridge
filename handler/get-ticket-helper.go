@@ -6,6 +6,8 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/sipgate/otrs-trello-bridge/otrs"
+	"github.com/spf13/viper"
+	"github.com/thoas/go-funk"
 )
 
 // GetTicketAndHandleFailure tries to get a Ticket from otrs, otherwise abort response with error
@@ -22,5 +24,11 @@ func GetTicketAndHandleFailure(ticketID string, c *gin.Context) (otrs.Ticket, bo
 		return otrs.Ticket{}, false
 	}
 
-	return ticket.Ticket[0], true
+	queues := viper.GetStringSlice("otrs.queues")
+
+	if funk.ContainsString(queues, ticket.Ticket[0].Queue) {
+		return ticket.Ticket[0], true
+	}
+
+	return ticket.Ticket[0], false
 }
