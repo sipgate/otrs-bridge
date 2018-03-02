@@ -7,22 +7,13 @@
 [![Build Status](https://travis-ci.org/sipgate/otrs-trello-bridge.svg?branch=master)](https://travis-ci.org/sipgate/otrs-trello-bridge)
 [![Go Report Card](https://goreportcard.com/badge/github.com/sipgate/otrs-trello-bridge)](https://goreportcard.com/report/github.com/sipgate/otrs-trello-bridge)
 
-## Building
-
-To build the otrs trello bridge you need a [go](https://golang.org/doc/install) runtime
-and the [dep](https://golang.github.io/dep/docs/installation.html) dependency manager
-
-After installing the prerequisites simply run
-```bash
-./scripts/build.sh
-```
-
-This will produce the `otrs-trello-bridge` statically linked binary
-
 ## Running
 
-Before running, make sure you copy the `config.toml.dist` file to `config.toml` in your working directory
-Then modify the settings to match your setup.
+You can grab the latest release build at the [releases page](releases).
+
+Before running, make sure you copy the `config.toml.dist` file to `config.toml` in your working directory.
+Then modify the settings to match your setup. You can override the config file name via the `CONFIG_NAME` env variable.
+To override the config file path, you can set the `CONFIG_PATH` env var.
 
 After that you should be able to run the binary:
 ```bash
@@ -31,7 +22,17 @@ After that you should be able to run the binary:
 
 The bridge defaults to port 8080 but can be overridden via the `PORT` environment variable.
 
-For more information please refer to the [gin docs](https://gin-gonic.github.io/gin/)
+## Building
+
+To build the otrs trello bridge you need a [go](https://golang.org/doc/install) runtime
+and the [dep](https://golang.github.io/dep/docs/installation.html) dependency manager.
+
+After installing the prerequisites simply run:
+```bash
+./scripts/build.sh
+```
+
+This will produce the `otrs-trello-bridge` statically linked binary
 
 ## OTRS Setup
 
@@ -39,8 +40,7 @@ Import the webservice definitions from the [otrs-webservices](otrs-webservices) 
 
 ## Hacking
 
-If you are using intellij or GoLand, simply open this directory as existing project.
-If using something else, just open the directory and start hacking.
+Just open the directory and start hacking.
 
 ## License
 
