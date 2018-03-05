@@ -14,7 +14,6 @@ import (
 	"github.com/sipgate/otrs-trello-bridge/utils"
 	"github.com/spf13/viper"
 	"github.com/thoas/go-funk"
-	"strconv"
 )
 
 // TicketStateUpdateHandler handles ticket state update events from otrs
