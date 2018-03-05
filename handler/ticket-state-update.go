@@ -14,6 +14,7 @@ import (
 	"github.com/sipgate/otrs-trello-bridge/utils"
 	"github.com/spf13/viper"
 	"github.com/thoas/go-funk"
+	"strconv"
 )
 
 // TicketStateUpdateHandler handles ticket state update events from otrs
@@ -36,6 +37,8 @@ func TicketStateUpdateHandler() func(c *gin.Context) {
 	}
 }
 func processCardStateUpdate(ticket otrs.Ticket, c *gin.Context, err error, client *trello.Client, card *trello.Card) {
+	setCardPosToTicketID(card, ticket)
+
 	if strings.Contains(ticket.State, "closed as junk") {
 		utils.DoIfNoErrorOrAbort(c, err, func() {
 			deleteCardAndRespond(client, card, c)
@@ -56,6 +59,11 @@ func processCardStateUpdate(ticket otrs.Ticket, c *gin.Context, err error, clien
 	} else {
 		c.AbortWithStatus(http.StatusTeapot)
 	}
+}
+func setCardPosToTicketID(card *trello.Card, ticket otrs.Ticket) {
+	arguments := trello.Defaults()
+	arguments["pos"] = ticket.TicketID
+	card.Update(arguments)
 }
 
 func addCommentIfNecessary(card *trello.Card, ticket otrs.Ticket) {
