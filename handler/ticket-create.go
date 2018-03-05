@@ -12,6 +12,7 @@ import (
 	"github.com/sipgate/otrs-trello-bridge/otrs"
 	trelloClient "github.com/sipgate/otrs-trello-bridge/trello"
 	"github.com/spf13/viper"
+	"strconv"
 )
 
 //TicketCreateHandler handles ticket creation events from otrs
@@ -22,7 +23,7 @@ func TicketCreateHandler() func(c *gin.Context) {
 		if ok {
 			markdownBody, listID, cardTitle := getTicketDataForCard(ticket)
 			client := trelloClient.NewClient()
-			err := createTrelloCard(cardTitle, markdownBody, listID, client)
+			err := createTrelloCard(ticketID, cardTitle, markdownBody, listID, client)
 			card, cardFound, err := findCardByTicketID(ticketID, client)
 			if cardFound {
 				arguments := trello.Defaults()
@@ -42,14 +43,18 @@ func TicketCreateHandler() func(c *gin.Context) {
 	}
 }
 
-func createTrelloCard(cardTitle string, markdownBody string, listID string, client *trello.Client) error {
+func createTrelloCard(ticketID string, cardTitle string, markdownBody string, listID string, client *trello.Client) error {
+	cardPos, err := strconv.Atoi(ticketID)
+	if err != nil {
+		return err
+	}
 	card := trello.Card{
 		Name:   cardTitle,
 		Desc:   markdownBody,
 		IDList: listID,
+		Pos:    float64(cardPos),
 	}
-	err := client.CreateCard(&card, trello.Defaults())
-	return err
+	return client.CreateCard(&card, trello.Defaults())
 }
 
 func getTicketDataForCard(ticket otrs.Ticket) (string, string, string) {
