@@ -13,6 +13,7 @@ import (
 	"github.com/sipgate/otrs-bridge/otrs"
 	"github.com/sipgate/otrs-bridge/utils"
 	"github.com/spf13/viper"
+	"github.com/thoas/go-funk"
 )
 
 type TicketUpdatedInteractor struct{}
