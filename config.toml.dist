@@ -14,3 +14,7 @@ webservicePath = ""
 user = ""
 password = ""
 queues = []
+
+[slack]
+apiToken = ""
+channelId = ""
