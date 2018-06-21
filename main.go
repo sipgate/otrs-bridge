@@ -6,14 +6,32 @@ import (
 	"github.com/sipgate/otrs-trello-bridge/trello"
 	"github.com/sipgate/otrs-trello-bridge/usecase"
 	"github.com/sipgate/otrs-trello-bridge/utils"
+	"github.com/spf13/viper"
+	"log"
 )
 
 func main() {
 	utils.ReadConfig()
+
+	hasFunctionality := viper.GetBool("trello.enabled") && viper.GetBool("slack.enabled")
+
+	if !hasFunctionality {
+		log.Fatal("no integrations are enabled, exiting")
+	}
+
 	r := gin.Default()
 
-	initTrelloRoutes(r)
-	initSlackRoutes(r)
+	if viper.GetBool("trello.enabled") {
+		initTrelloRoutes(r)
+	} else {
+		log.Println("trello support is disabled")
+	}
+
+	if viper.GetBool("slack.enabled") {
+		initSlackRoutes(r)
+	} else {
+		log.Println("slack support is disabled")
+	}
 
 	r.Run() // listen and serve on 0.0.0.0:8080
 }

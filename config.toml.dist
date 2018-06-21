@@ -1,4 +1,12 @@
+[otrs]
+baseUrl = ""
+webservicePath = ""
+user = ""
+password = ""
+queues = []
+
 [trello]
+enabled = true
 appKey = ""
 token = ""
 ticketCreateListID = ""
@@ -8,13 +16,7 @@ soonLabelId = ""
 ticketDoingListID = ""
 proxy = ""
 
-[otrs]
-baseUrl = ""
-webservicePath = ""
-user = ""
-password = ""
-queues = []
-
 [slack]
+enabled = true
 apiToken = ""
 channelId = ""
