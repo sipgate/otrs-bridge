@@ -101,4 +101,5 @@ vendor/
 config.toml
 
 otrs-trello-bridge
+otrs-bridge
 /config.sandbox.toml
