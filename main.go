@@ -24,12 +24,14 @@ func main() {
 
 	if viper.GetBool("trello.enabled") {
 		initTrelloRoutes(r)
+		log.Println("trello support is enabled")
 	} else {
 		log.Println("trello support is disabled")
 	}
 
 	if viper.GetBool("slack.enabled") {
 		initSlackRoutes(r)
+		log.Println("slack support is enabled")
 	} else {
 		log.Println("slack support is disabled")
 	}
