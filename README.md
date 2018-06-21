@@ -7,8 +7,8 @@
 * Keep a trello board in sync with your OTRS
 * Post new Tickets to Slack channel
 
-[![Build Status](https://travis-ci.org/sipgate/otrs-trello-bridge.svg?branch=master)](https://travis-ci.org/sipgate/otrs-trello-bridge)
-[![Go Report Card](https://goreportcard.com/badge/github.com/sipgate/otrs-trello-bridge)](https://goreportcard.com/report/github.com/sipgate/otrs-trello-bridge)
+[![Build Status](https://travis-ci.org/sipgate/otrs-bridge.svg?branch=master)](https://travis-ci.org/sipgate/otrs-trello-bridge)
+[![Go Report Card](https://goreportcard.com/badge/github.com/sipgate/otrs-bridge)](https://goreportcard.com/report/github.com/sipgate/otrs-trello-bridge)
 
 ## Running
 
