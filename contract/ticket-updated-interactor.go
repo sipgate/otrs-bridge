@@ -1,8 +1,8 @@
 package contract
 
 import (
-	"github.com/sipgate/otrs-trello-bridge/otrs"
 	"github.com/gin-gonic/gin"
+	"github.com/sipgate/otrs-trello-bridge/otrs"
 )
 
 type TicketUpdatedInteractor interface {

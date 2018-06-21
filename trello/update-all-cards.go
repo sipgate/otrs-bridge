@@ -1,15 +1,15 @@
 package trello
 
 import (
-	"log"
-	"net/http"
 	"github.com/derveloper/trello"
 	"github.com/gin-gonic/gin"
 	"github.com/pkg/errors"
+	"github.com/sipgate/otrs-trello-bridge/otrs"
 	"github.com/sipgate/otrs-trello-bridge/utils"
 	"github.com/spf13/viper"
 	"github.com/thoas/go-funk"
-	"github.com/sipgate/otrs-trello-bridge/otrs"
+	"log"
+	"net/http"
 )
 
 // UpdateAllCardsHandler calls TicketStateUpdate for all cards in board

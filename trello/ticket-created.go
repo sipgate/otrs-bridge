@@ -2,17 +2,17 @@ package trello
 
 import (
 	"fmt"
-	"log"
 	"github.com/derveloper/trello"
 	"github.com/lunny/html2md"
 	"github.com/pkg/errors"
+	"github.com/sipgate/otrs-trello-bridge/contract"
 	"github.com/sipgate/otrs-trello-bridge/otrs"
 	"github.com/spf13/viper"
+	"log"
 	"strconv"
-	"github.com/sipgate/otrs-trello-bridge/contract"
 )
 
-type TicketCreatedInteractor struct {}
+type TicketCreatedInteractor struct{}
 
 // TicketCreateHandler handles ticket creation events from otrs
 func (t *TicketCreatedInteractor) HandleTicketCreated(ticketID string, ticket otrs.Ticket) error {

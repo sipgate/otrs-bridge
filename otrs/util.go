@@ -1,10 +1,10 @@
 package otrs
 
 import (
-	"regexp"
-	"log"
 	"github.com/pkg/errors"
 	"github.com/spf13/viper"
+	"log"
+	"regexp"
 )
 
 func ExtractTicketID(name string) (string, error) {

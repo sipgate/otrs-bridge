@@ -1,20 +1,20 @@
 package slack
 
 import (
+	"fmt"
+	"github.com/nlopes/slack"
 	"github.com/sipgate/otrs-trello-bridge/contract"
 	"github.com/sipgate/otrs-trello-bridge/otrs"
-	"github.com/nlopes/slack"
-	"fmt"
 	"github.com/spf13/viper"
 )
 
-type TicketCreatedInteractor struct {}
+type TicketCreatedInteractor struct{}
 
 func (t *TicketCreatedInteractor) HandleTicketCreated(ticketID string, ticket otrs.Ticket) error {
 	api := slack.New(viper.GetString("slack.apiToken"))
 	params := slack.PostMessageParameters{}
 	attachment := slack.Attachment{
-		Title: ticket.Title,
+		Title:     ticket.Title,
 		TitleLink: otrs.MakeTicketUrl(ticket),
 	}
 	params.Attachments = []slack.Attachment{attachment}

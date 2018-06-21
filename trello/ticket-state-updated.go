@@ -9,14 +9,14 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/lunny/html2md"
 	"github.com/pkg/errors"
+	"github.com/sipgate/otrs-trello-bridge/contract"
 	"github.com/sipgate/otrs-trello-bridge/otrs"
 	"github.com/sipgate/otrs-trello-bridge/utils"
 	"github.com/spf13/viper"
 	"github.com/thoas/go-funk"
-	"github.com/sipgate/otrs-trello-bridge/contract"
 )
 
-type TicketUpdatedInteractor struct {}
+type TicketUpdatedInteractor struct{}
 
 // TicketStateUpdateHandler handles ticket state update events from otrs
 func (t *TicketUpdatedInteractor) HandleTicketUpdated(ticketID string, ticket otrs.Ticket, c *gin.Context) {

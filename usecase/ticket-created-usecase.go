@@ -1,8 +1,8 @@
 package usecase
 
 import (
-	"github.com/sipgate/otrs-trello-bridge/contract"
 	"github.com/gin-gonic/gin"
+	"github.com/sipgate/otrs-trello-bridge/contract"
 	"github.com/sipgate/otrs-trello-bridge/otrs"
 	"log"
 	"net/http"
