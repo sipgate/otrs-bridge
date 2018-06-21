@@ -1,8 +1,11 @@
-# OTRS Trello bridge
+# OTRS bridge
 
 ## Introduction
 
-> Keep a trello board in sync with your OTRS
+### Features
+
+* Keep a trello board in sync with your OTRS
+* Post new Tickets to Slack channel
 
 [![Build Status](https://travis-ci.org/sipgate/otrs-trello-bridge.svg?branch=master)](https://travis-ci.org/sipgate/otrs-trello-bridge)
 [![Go Report Card](https://goreportcard.com/badge/github.com/sipgate/otrs-trello-bridge)](https://goreportcard.com/report/github.com/sipgate/otrs-trello-bridge)
@@ -17,14 +20,14 @@ To override the config file path, you can set the `CONFIG_PATH` env var.
 
 After that you should be able to run the binary:
 ```bash
-./otrs-trello-bridge
+./otrs-bridge
 ```
 
 The bridge defaults to port 8080 but can be overridden via the `PORT` environment variable.
 
 ## Building
 
-To build the otrs trello bridge you need a [go](https://golang.org/doc/install) runtime
+To build the otrs bridge you need a [go](https://golang.org/doc/install) runtime
 and the [dep](https://golang.github.io/dep/docs/installation.html) dependency manager.
 
 After installing the prerequisites simply run:
@@ -32,7 +35,7 @@ After installing the prerequisites simply run:
 ./scripts/build.sh
 ```
 
-This will produce the `otrs-trello-bridge` statically linked binary
+This will produce the `otrs-bridge` statically linked binary
 
 ## OTRS Setup
 
