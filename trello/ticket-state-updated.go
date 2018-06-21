@@ -2,16 +2,13 @@ package trello
 
 import (
 	"log"
-	"net/http"
 	"strings"
 
 	"github.com/adlio/trello"
-	"github.com/gin-gonic/gin"
 	"github.com/lunny/html2md"
 	"github.com/pkg/errors"
 	"github.com/sipgate/otrs-bridge/contract"
 	"github.com/sipgate/otrs-bridge/otrs"
-	"github.com/sipgate/otrs-bridge/utils"
 	"github.com/spf13/viper"
 	"github.com/thoas/go-funk"
 )
@@ -19,16 +16,23 @@ import (
 type TicketUpdatedInteractor struct{}
 
 // TicketStateUpdateHandler handles ticket state update events from otrs
-func (t *TicketUpdatedInteractor) HandleTicketUpdated(ticketID string, ticket otrs.Ticket, c *gin.Context) {
+func (t *TicketUpdatedInteractor) HandleTicketUpdated(ticketID string, ticket otrs.Ticket) (contract.TicketUpdateResponse, error) {
 	client := NewClient()
 	card, foundCard, err := findCardByTicketID(ticketID, client)
-	if foundCard {
-		utils.DoIfNoErrorOrAbort(c, err, func() {
+	if err == nil {
+		if foundCard {
 			addCommentIfNecessary(card, ticket)
-			processCardStateUpdate(ticket, c, err, client, card)
-		})
+			err = processCardStateUpdate(ticket, client, card)
+			if err == nil {
+				return contract.SuccessfulUpdate, nil
+			} else {
+				return contract.UnexpectedError, err
+			}
+		} else {
+			return contract.CardNotFound, nil
+		}
 	} else {
-		c.AbortWithStatus(http.StatusTeapot)
+		return contract.UnexpectedError, err
 	}
 }
 
@@ -36,29 +40,24 @@ func NewTicketUpdatedInteractor() contract.TicketUpdatedInteractor {
 	return &TicketUpdatedInteractor{}
 }
 
-func processCardStateUpdate(ticket otrs.Ticket, c *gin.Context, err error, client *trello.Client, card *trello.Card) {
+func processCardStateUpdate(ticket otrs.Ticket, client *trello.Client, card *trello.Card) error {
 	setCardPosToTicketID(card, ticket)
 
 	if strings.Contains(ticket.State, "closed as junk") {
-		utils.DoIfNoErrorOrAbort(c, err, func() {
-			deleteCardAndRespond(client, card, c)
-		})
+		return deleteCardAndRespond(client, card)
 	} else if strings.Contains(ticket.State, "closed as announcement") {
 		arguments := trello.Defaults()
 		arguments["closed"] = "true"
-		err := card.Update(arguments)
-		utils.DoIfNoErrorOrAbort(c, err, func() {
-			c.AbortWithStatus(http.StatusAccepted)
-		})
+		return card.Update(arguments)
 	} else if strings.Contains(ticket.State, "closed") {
 		listID := viper.GetString("trello.ticketDoneListID")
-		moveCardAndRespond(card, listID, c)
+		return card.MoveToList(listID, trello.Defaults())
 	} else if strings.Contains(ticket.State, "open") {
 		listID := viper.GetString("trello.ticketDoingListID")
-		moveCardAndRespond(card, listID, c)
-	} else {
-		c.AbortWithStatus(http.StatusTeapot)
+		return card.MoveToList(listID, trello.Defaults())
 	}
+
+	return nil
 }
 func setCardPosToTicketID(card *trello.Card, ticket otrs.Ticket) {
 	arguments := trello.Defaults()
@@ -77,20 +76,11 @@ func addCommentIfNecessary(card *trello.Card, ticket otrs.Ticket) {
 	}
 }
 
-func deleteCardAndRespond(client *trello.Client, card *trello.Card, c *gin.Context) {
+func deleteCardAndRespond(client *trello.Client, card *trello.Card) error {
 	type deleteResponse struct{}
 	var response deleteResponse
 	err := client.Delete("/cards/"+card.ID, trello.Defaults(), &response)
-	utils.DoIfNoErrorOrAbort(c, err, func() {
-		c.AbortWithStatus(http.StatusAccepted)
-	})
-}
-
-func moveCardAndRespond(card *trello.Card, listID string, c *gin.Context) {
-	err := card.MoveToList(listID, trello.Defaults())
-	utils.DoIfNoErrorOrAbort(c, err, func() {
-		c.AbortWithStatus(http.StatusAccepted)
-	})
+	return err
 }
 
 func findCardByTicketID(ticketID string, client *trello.Client) (*trello.Card, bool, error) {

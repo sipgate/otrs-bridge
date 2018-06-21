@@ -16,14 +16,17 @@ type TicketCreatedUseCase struct {
 func (t *TicketCreatedUseCase) TicketCreated() func(c *gin.Context) {
 	return func(c *gin.Context) {
 		ticketID := c.Param("ticketID")
-		ticket, ok := otrs.GetTicketAndHandleFailure(ticketID, c)
-		if ok {
+		ticket, ok, err := otrs.GetTicketAndHandleFailure(ticketID)
+		if err != nil {
+			log.Println(err)
+			c.AbortWithError(http.StatusInternalServerError, err)
+		} else if ok {
 			err := t.ticketCreatedInteractor.HandleTicketCreated(ticketID, ticket)
 			if err == nil {
 				c.AbortWithStatus(http.StatusAccepted)
 			} else {
 				log.Println(err)
-				c.AbortWithError(500, err)
+				c.AbortWithError(http.StatusInternalServerError, err)
 			}
 		}
 	}
