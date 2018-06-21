@@ -12,10 +12,11 @@ func main() {
 	r := gin.Default()
 	trelloTicketCreatedInteractor := trello.NewTicketCreatedInteractor()
 	trelloTicketCreated := usecase.NewTicketCreatedUseCase(trelloTicketCreatedInteractor)
-	trelloTicketStateUpdated := trello.NewTrelloTicketStateUpdatedUseCase()
+	trelloTicketUpdatedInteractor := trello.NewTicketUpdatedInteractor()
+	trelloTicketUpdated := usecase.NewTicketStateUpdatedUseCase(trelloTicketUpdatedInteractor)
 	r.POST("/trello/TicketCreate/:ticketID", trelloTicketCreated.TicketCreated())
 	r.POST("/trello/UpdateAllCards", trello.UpdateAllCardsHandler())
-	r.POST("/trello/TicketStateUpdate/:ticketID", trelloTicketStateUpdated.TicketStateUpdated())
+	r.POST("/trello/TicketStateUpdate/:ticketID", trelloTicketUpdated.TicketStateUpdated())
 
 
 

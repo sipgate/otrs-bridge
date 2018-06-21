@@ -16,30 +16,24 @@ import (
 	"github.com/sipgate/otrs-trello-bridge/contract"
 )
 
-type TicketStateUpdatedUseCase struct {}
+type TicketUpdatedInteractor struct {}
 
 // TicketStateUpdateHandler handles ticket state update events from otrs
-func (t *TicketStateUpdatedUseCase) TicketStateUpdated() func(c *gin.Context) {
-	return func(c *gin.Context) {
-		ticketID := c.Param("ticketID")
-		ticket, ok := otrs.GetTicketAndHandleFailure(ticketID, c)
-		if ok {
-			client := NewClient()
-			card, foundCard, err := findCardByTicketID(ticketID, client)
-			if foundCard {
-				utils.DoIfNoErrorOrAbort(c, err, func() {
-					addCommentIfNecessary(card, ticket)
-					processCardStateUpdate(ticket, c, err, client, card)
-				})
-			} else {
-				c.AbortWithStatus(http.StatusTeapot)
-			}
-		}
+func (t *TicketUpdatedInteractor) HandleTicketUpdated(ticketID string, ticket otrs.Ticket, c *gin.Context) {
+	client := NewClient()
+	card, foundCard, err := findCardByTicketID(ticketID, client)
+	if foundCard {
+		utils.DoIfNoErrorOrAbort(c, err, func() {
+			addCommentIfNecessary(card, ticket)
+			processCardStateUpdate(ticket, c, err, client, card)
+		})
+	} else {
+		c.AbortWithStatus(http.StatusTeapot)
 	}
 }
 
-func NewTrelloTicketStateUpdatedUseCase() contract.TicketStateUpdatedUseCase {
-	return &TicketStateUpdatedUseCase{}
+func NewTicketUpdatedInteractor() contract.TicketUpdatedInteractor {
+	return &TicketUpdatedInteractor{}
 }
 
 func processCardStateUpdate(ticket otrs.Ticket, c *gin.Context, err error, client *trello.Client, card *trello.Card) {
