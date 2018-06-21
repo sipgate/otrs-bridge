@@ -20,3 +20,4 @@ proxy = ""
 enabled = true
 apiToken = ""
 channelId = ""
+proxy = ""

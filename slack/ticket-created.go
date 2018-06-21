@@ -5,13 +5,23 @@ import (
 	"github.com/nlopes/slack"
 	"github.com/sipgate/otrs-bridge/contract"
 	"github.com/sipgate/otrs-bridge/otrs"
+	"github.com/sipgate/otrs-bridge/utils"
 	"github.com/spf13/viper"
 )
 
 type TicketCreatedInteractor struct{}
 
 func (t *TicketCreatedInteractor) HandleTicketCreated(ticketID string, ticket otrs.Ticket) error {
-	api := slack.New(viper.GetString("slack.apiToken"))
+	proxy := viper.GetString("slack.proxy")
+	var api *slack.Client
+
+	if proxy != "" {
+		client := slack.OptionHTTPClient(utils.NewHttpClient(""))
+		api = slack.New(viper.GetString("slack.apiToken"), client)
+	} else {
+		api = slack.New(viper.GetString("slack.apiToken"))
+	}
+
 	params := slack.PostMessageParameters{}
 	attachment := slack.Attachment{
 		Title:     ticket.Title,
