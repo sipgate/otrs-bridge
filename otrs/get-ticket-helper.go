@@ -13,7 +13,7 @@ import (
 func GetTicketAndHandleFailure(ticketID string, c *gin.Context) (Ticket, bool) {
 	ticket, res, body, getTicketErr := GetTicket(ticketID)
 	if getTicketErr != nil {
-		log.Fatal(getTicketErr)
+		log.Println(getTicketErr)
 		c.AbortWithError(http.StatusInternalServerError, getTicketErr)
 		return Ticket{}, false
 	} else if res.StatusCode >= 400 || len(ticket.Ticket) == 0 {
