@@ -13,7 +13,8 @@ import (
 func main() {
 	utils.ReadConfig()
 
-	hasFunctionality := viper.GetBool("trello.enabled") && viper.GetBool("slack.enabled")
+	hasFunctionality := viper.GetBool("trello.enabled") ||
+		viper.GetBool("slack.enabled")
 
 	if !hasFunctionality {
 		log.Fatal("no integrations are enabled, exiting")
