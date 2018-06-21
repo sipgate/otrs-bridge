@@ -3,8 +3,8 @@ package slack
 import (
 	"fmt"
 	"github.com/nlopes/slack"
-	"github.com/sipgate/otrs-trello-bridge/contract"
-	"github.com/sipgate/otrs-trello-bridge/otrs"
+	"github.com/sipgate/otrs-bridge/contract"
+	"github.com/sipgate/otrs-bridge/otrs"
 	"github.com/spf13/viper"
 )
 

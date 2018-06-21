@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"net/url"
 
-	"github.com/derveloper/trello"
+	"github.com/adlio/trello"
 	"github.com/pkg/errors"
 	"github.com/spf13/viper"
 )

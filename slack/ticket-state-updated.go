@@ -2,8 +2,8 @@ package slack
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/sipgate/otrs-trello-bridge/contract"
-	"github.com/sipgate/otrs-trello-bridge/otrs"
+	"github.com/sipgate/otrs-bridge/contract"
+	"github.com/sipgate/otrs-bridge/otrs"
 	"net/http"
 )
 

@@ -2,11 +2,11 @@ package trello
 
 import (
 	"fmt"
-	"github.com/derveloper/trello"
+	"github.com/adlio/trello"
 	"github.com/lunny/html2md"
 	"github.com/pkg/errors"
-	"github.com/sipgate/otrs-trello-bridge/contract"
-	"github.com/sipgate/otrs-trello-bridge/otrs"
+	"github.com/sipgate/otrs-bridge/contract"
+	"github.com/sipgate/otrs-bridge/otrs"
 	"github.com/spf13/viper"
 	"log"
 	"strconv"

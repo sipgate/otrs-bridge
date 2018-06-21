@@ -47,7 +47,7 @@
 
 [[constraint]]
   branch = "master"
-  name = "github.com/derveloper/trello"
+  name = "github.com/adlio/trello"
 
 [[constraint]]
   name = "github.com/thoas/go-funk"

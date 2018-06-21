@@ -2,10 +2,10 @@ package main
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/sipgate/otrs-trello-bridge/slack"
-	"github.com/sipgate/otrs-trello-bridge/trello"
-	"github.com/sipgate/otrs-trello-bridge/usecase"
-	"github.com/sipgate/otrs-trello-bridge/utils"
+	"github.com/sipgate/otrs-bridge/slack"
+	"github.com/sipgate/otrs-bridge/trello"
+	"github.com/sipgate/otrs-bridge/usecase"
+	"github.com/sipgate/otrs-bridge/utils"
 	"github.com/spf13/viper"
 	"log"
 )

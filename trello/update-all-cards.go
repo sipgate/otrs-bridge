@@ -1,11 +1,11 @@
 package trello
 
 import (
-	"github.com/derveloper/trello"
+	"github.com/adlio/trello"
 	"github.com/gin-gonic/gin"
 	"github.com/pkg/errors"
-	"github.com/sipgate/otrs-trello-bridge/otrs"
-	"github.com/sipgate/otrs-trello-bridge/utils"
+	"github.com/sipgate/otrs-bridge/otrs"
+	"github.com/sipgate/otrs-bridge/utils"
 	"github.com/spf13/viper"
 	"github.com/thoas/go-funk"
 	"log"

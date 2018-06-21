@@ -5,15 +5,14 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/derveloper/trello"
+	"github.com/adlio/trello"
 	"github.com/gin-gonic/gin"
 	"github.com/lunny/html2md"
 	"github.com/pkg/errors"
-	"github.com/sipgate/otrs-trello-bridge/contract"
-	"github.com/sipgate/otrs-trello-bridge/otrs"
-	"github.com/sipgate/otrs-trello-bridge/utils"
+	"github.com/sipgate/otrs-bridge/contract"
+	"github.com/sipgate/otrs-bridge/otrs"
+	"github.com/sipgate/otrs-bridge/utils"
 	"github.com/spf13/viper"
-	"github.com/thoas/go-funk"
 )
 
 type TicketUpdatedInteractor struct{}
