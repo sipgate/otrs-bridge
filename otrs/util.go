@@ -4,6 +4,7 @@ import (
 	"regexp"
 	"log"
 	"github.com/pkg/errors"
+	"github.com/spf13/viper"
 )
 
 func ExtractTicketID(name string) (string, error) {
@@ -20,4 +21,10 @@ func ExtractTicketID(name string) (string, error) {
 	}
 
 	return "", errors.New("could not extract ticketID from '" + name + "'")
+}
+
+func MakeTicketUrl(ticket Ticket) string {
+	otrsBaseURL := viper.GetString("otrs.baseUrl")
+	originalTicketURL := otrsBaseURL + "/index.pl?Action=AgentTicketZoom;TicketID=" + ticket.TicketID
+	return originalTicketURL
 }

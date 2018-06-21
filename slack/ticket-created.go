@@ -14,7 +14,8 @@ func (t *TicketCreatedInteractor) HandleTicketCreated(ticketID string, ticket ot
 	api := slack.New(viper.GetString("slack.apiToken"))
 	params := slack.PostMessageParameters{}
 	attachment := slack.Attachment{
-		Pretext: ticket.Title,
+		Title: ticket.Title,
+		TitleLink: otrs.MakeTicketUrl(ticket),
 	}
 	params.Attachments = []slack.Attachment{attachment}
 	channelID, timestamp, err := api.PostMessage(viper.GetString("slack.channelId"), "New OTRS Ticket", params)
