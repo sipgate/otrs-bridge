@@ -16,7 +16,7 @@ func (t *TicketCreatedInteractor) HandleTicketCreated(ticketID string, ticket ot
 	var api *slack.Client
 
 	if proxy != "" {
-		client := slack.OptionHTTPClient(utils.NewHttpClient(""))
+		client := slack.OptionHTTPClient(utils.NewHttpClient(proxy))
 		api = slack.New(viper.GetString("slack.apiToken"), client)
 	} else {
 		api = slack.New(viper.GetString("slack.apiToken"))
