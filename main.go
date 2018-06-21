@@ -4,12 +4,14 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/sipgate/otrs-trello-bridge/utils"
 	"github.com/sipgate/otrs-trello-bridge/trello"
+	"github.com/sipgate/otrs-trello-bridge/usecase"
 )
 
 func main() {
 	utils.ReadConfig()
 	r := gin.Default()
-	trelloTicketCreated := trello.NewTrelloTicketCreatedUseCase()
+	trelloTicketCreatedInteractor := trello.NewTicketCreatedInteractor()
+	trelloTicketCreated := usecase.NewTicketCreatedUseCase(trelloTicketCreatedInteractor)
 	trelloTicketStateUpdated := trello.NewTrelloTicketStateUpdatedUseCase()
 	r.POST("/trello/TicketCreate/:ticketID", trelloTicketCreated.TicketCreated())
 	r.POST("/trello/UpdateAllCards", trello.UpdateAllCardsHandler())
