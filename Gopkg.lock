@@ -112,6 +112,19 @@
   version = "v1.0.0"
 
 [[projects]]
+  branch = "master"
+  name = "github.com/sipgate/otrs-trello-bridge"
+  packages = [
+    "contract",
+    "otrs",
+    "slack",
+    "trello",
+    "usecase",
+    "utils"
+  ]
+  revision = "f83de9775c77e370a81a272f4669b62017be32f7"
+
+[[projects]]
   name = "github.com/spf13/afero"
   packages = [
     ".",
@@ -213,6 +226,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "cbe74ee946ae4b0e77d8a9ead83e812b57b4fd89409bb7694a7cfc17465473e1"
+  inputs-digest = "8ebc15680e3083466cdff66bd279ee184e3ab8b7713b6692bfd45d084724b07a"
   solver-name = "gps-cdcl"
   solver-version = 1
