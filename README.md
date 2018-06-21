@@ -15,12 +15,11 @@
 You can grab the latest release build at the [releases page](releases).
 
 Before running, make sure you copy the `config.toml.dist` file to `config.toml` in your working directory.
-Then modify the settings to match your setup. You can override the config file name via the `CONFIG_NAME` env variable.
-To override the config file path, you can set the `CONFIG_PATH` env var.
+Then modify the settings to match your setup. You can override the config file location via the `-config` argument.
 
 After that you should be able to run the binary:
 ```bash
-./otrs-bridge
+./otrs-bridge -config /usr/local/etc/otrs-bridge/config.toml
 ```
 
 The bridge defaults to port 8080 but can be overridden via the `PORT` environment variable.
