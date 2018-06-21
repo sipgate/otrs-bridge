@@ -1,4 +1,4 @@
-package handler
+package otrs
 
 import (
 	"testing"
@@ -6,8 +6,8 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestExtractticketID(t *testing.T) {
-	ticketID, err := extractTicketID("[#12345] some ticket name")
+func TestExtractTicketID(t *testing.T) {
+	ticketID, err := ExtractTicketID("[#12345] some ticket name")
 	assert.NoError(t, err, "extract does not return an error")
 	assert.Equal(t, "12345", ticketID, "extracts the correct ticketID")
 }

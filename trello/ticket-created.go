@@ -1,4 +1,4 @@
-package handler
+package trello
 
 import (
 	"fmt"
@@ -10,19 +10,21 @@ import (
 	"github.com/lunny/html2md"
 	"github.com/pkg/errors"
 	"github.com/sipgate/otrs-trello-bridge/otrs"
-	trelloClient "github.com/sipgate/otrs-trello-bridge/trello"
 	"github.com/spf13/viper"
 	"strconv"
+	"github.com/sipgate/otrs-trello-bridge/contract"
 )
 
-//TicketCreateHandler handles ticket creation events from otrs
-func TicketCreateHandler() func(c *gin.Context) {
+type TicketCreatedUseCase struct {}
+
+// TicketCreateHandler handles ticket creation events from otrs
+func (t *TicketCreatedUseCase) TicketCreated() func(c *gin.Context) {
 	return func(c *gin.Context) {
 		ticketID := c.Param("ticketID")
-		ticket, ok := GetTicketAndHandleFailure(ticketID, c)
+		ticket, ok := otrs.GetTicketAndHandleFailure(ticketID, c)
 		if ok {
 			markdownBody, listID, cardTitle := getTicketDataForCard(ticket)
-			client := trelloClient.NewClient()
+			client := NewClient()
 			err := createTrelloCard(ticketID, cardTitle, markdownBody, listID, client)
 			card, cardFound, err := findCardByTicketID(ticketID, client)
 			if cardFound {
@@ -41,6 +43,10 @@ func TicketCreateHandler() func(c *gin.Context) {
 			}
 		}
 	}
+}
+
+func NewTrelloTicketCreatedUseCase() contract.TicketCreatedUseCase {
+	return &TicketCreatedUseCase{}
 }
 
 func createTrelloCard(ticketID string, cardTitle string, markdownBody string, listID string, client *trello.Client) error {

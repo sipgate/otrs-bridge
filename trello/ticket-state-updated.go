@@ -1,4 +1,4 @@
-package handler
+package trello
 
 import (
 	"log"
@@ -10,19 +10,21 @@ import (
 	"github.com/lunny/html2md"
 	"github.com/pkg/errors"
 	"github.com/sipgate/otrs-trello-bridge/otrs"
-	trelloClient "github.com/sipgate/otrs-trello-bridge/trello"
 	"github.com/sipgate/otrs-trello-bridge/utils"
 	"github.com/spf13/viper"
 	"github.com/thoas/go-funk"
+	"github.com/sipgate/otrs-trello-bridge/contract"
 )
 
+type TicketStateUpdatedUseCase struct {}
+
 // TicketStateUpdateHandler handles ticket state update events from otrs
-func TicketStateUpdateHandler() func(c *gin.Context) {
+func (t *TicketStateUpdatedUseCase) TicketStateUpdated() func(c *gin.Context) {
 	return func(c *gin.Context) {
 		ticketID := c.Param("ticketID")
-		ticket, ok := GetTicketAndHandleFailure(ticketID, c)
+		ticket, ok := otrs.GetTicketAndHandleFailure(ticketID, c)
 		if ok {
-			client := trelloClient.NewClient()
+			client := NewClient()
 			card, foundCard, err := findCardByTicketID(ticketID, client)
 			if foundCard {
 				utils.DoIfNoErrorOrAbort(c, err, func() {
@@ -35,6 +37,11 @@ func TicketStateUpdateHandler() func(c *gin.Context) {
 		}
 	}
 }
+
+func NewTrelloTicketStateUpdatedUseCase() contract.TicketStateUpdatedUseCase {
+	return &TicketStateUpdatedUseCase{}
+}
+
 func processCardStateUpdate(ticket otrs.Ticket, c *gin.Context, err error, client *trello.Client, card *trello.Card) {
 	setCardPosToTicketID(card, ticket)
 
