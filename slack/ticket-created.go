@@ -24,6 +24,7 @@ func (t *TicketCreatedInteractor) HandleTicketCreated(ticketID string, ticket ot
 
 	params := slack.PostMessageParameters{}
 	params.Username = "otrs-bridge"
+	params.IconEmoji = ":bomb:"
 	attachment := slack.Attachment{
 		Title:     ticket.Title,
 		TitleLink: otrs.MakeTicketUrl(ticket),
